@@ -11,12 +11,13 @@ const HomePage = () => {
         {products.map(product => (
           <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
             <Product
-              _id={product._id}
-              image={product.image}
-              name={product.image}
-              rating={product.rating}
-              numReviews={product.numReviews}
-              price={product.price}
+              product={product}
+              // _id={product._id}
+              // image={product.image}
+              // name={product.name}
+              // rating={product.rating}
+              // numReviews={product.numReviews}
+              // price={product.price}
             />
           </Col>
         ))}
