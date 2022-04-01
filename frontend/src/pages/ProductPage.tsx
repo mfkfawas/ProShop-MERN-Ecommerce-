@@ -3,7 +3,6 @@ import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
 
 import Rating from '../components/Rating';
 import { ProductTypeObj } from '../interface/interface';
-import Product from '../components/Product';
 
 const ProductPage = () => {
   const location = useLocation();
