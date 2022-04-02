@@ -17,7 +17,7 @@ export const getProduct = (req: Request, res: Response, next: NextFunction) => {
   const productId = req.params.productId;
   const product = products.find(p => p._id === productId);
   if (product) {
-    res.json(product);
+    res.status(200).json(product);
   } else {
     res.status(404).json({ message: 'Product not found' });
   }
