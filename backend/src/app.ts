@@ -11,6 +11,6 @@ app.use(
   })
 );
 
-app.use('/api/products', productRouter);
+app.use('/api/v1/products', productRouter);
 
 export default app;

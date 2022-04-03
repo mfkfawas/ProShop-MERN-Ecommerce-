@@ -10,5 +10,5 @@ const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     origin: 'http://localhost:3000',
 }));
-app.use('/api/products', productRoute_1.default);
+app.use('/api/v1/products', productRoute_1.default);
 exports.default = app;
