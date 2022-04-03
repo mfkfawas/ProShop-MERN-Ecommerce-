@@ -70,15 +70,14 @@ const productSchema = new mongoose.Schema(
     reviews: [reviewSchema],
     rating: {
       type: Number,
-      required: true,
-      default: 0,
-    },
-    numReviews: {
-      type: Number,
       default: 4.5,
       min: [1, 'Rating must be above 1.0'],
       max: [5, 'Rating must be below 5.0'],
       set: (val: number) => Math.round(val * 10) / 10,
+    },
+    numReviews: {
+      type: Number,
+      default: 0,
     },
     price: {
       type: Number,
