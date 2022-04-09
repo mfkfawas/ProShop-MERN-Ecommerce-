@@ -1,33 +1,53 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
-import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap';
 
 import Rating from '../components/Rating';
-import { ProductTypeObj } from '../interface/interface';
+import Message from '../components/Message';
+import Loader from '../components/Loader';
+import { listProductDetails } from '../store/actions/productActions';
 
 const ProductPage = () => {
-  const location = useLocation();
-  const state = location.state as ProductTypeObj;
+  const [qty, setQty] = useState(0);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
-  const [product, setProduct] = useState(state);
-
   useEffect(() => {
-    const fetchProduct = async () => {
-      const { data } = await axios(`/api/products/${id}`);
-      setProduct(data);
-    };
+    dispatch(listProductDetails(id));
+  }, [dispatch, id]);
 
-    if (!product) fetchProduct();
-  }, [id, product]);
+  const productDetails = useSelector((state: any) => state.productDetails);
+  const { product, loading, error } = productDetails;
+
+  const addToCartHandler = () => {
+    navigate('/cart/' + id + '?qty=' + qty);
+  };
+
+  // const location = useLocation();
+  // const state = location.state as ProductTypeObj;
+
+  // const [product, setProduct] = useState(state);
+
+  // useEffect(() => {
+  //   const fetchProduct = async () => {
+  //     const { data } = await axios(`/api/products/${id}`);
+  //     setProduct(data);
+  //   };
+
+  //   if (!product) fetchProduct();
+  // }, [id, product]);
 
   return (
     <>
       <Link className='btn btn-light my-3' to='/'>
         Go Back
       </Link>
+      {loading && <Loader />}
+      {error && <Message variant='danger'>{error}</Message>}
 
       {product && (
         <Row>
@@ -70,8 +90,33 @@ const ProductPage = () => {
                   </Row>
                 </ListGroup.Item>
 
+                {product.countInStock > 0 && (
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Qty</Col>
+                      <Col>
+                        <Form.Control
+                          as='select'
+                          value={qty}
+                          onChange={e => setQty(+e.target.value)}
+                        >
+                          {[...Array(product.countInStock).keys()].map(x => (
+                            <option key={x + 1} value={x + 1}>
+                              {x + 1}
+                            </option>
+                          ))}
+                        </Form.Control>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                )}
+
                 <ListGroup.Item>
-                  <Button disabled={product.countInStock === 0} className='w-100'>
+                  <Button
+                    disabled={product.countInStock === 0}
+                    className='w-100'
+                    onClick={addToCartHandler}
+                  >
                     Add To Cart
                   </Button>
                 </ListGroup.Item>

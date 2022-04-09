@@ -1,4 +1,4 @@
-import { RatingType } from '../interface/interface';
+import { RatingType } from '../interface';
 
 export default function Rating({ value, text, color = '#f8e825' }: RatingType) {
   return (

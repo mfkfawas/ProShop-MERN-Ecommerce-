@@ -1,3 +1,4 @@
+// types of our state
 export interface ProductTypeObj {
   _id: string;
   name: string;

@@ -2,7 +2,7 @@ import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import Rating from '../components/Rating';
-import { ProductType } from '../interface/interface';
+import { ProductType } from '../interface';
 
 function Product({ product }: ProductType) {
   return (

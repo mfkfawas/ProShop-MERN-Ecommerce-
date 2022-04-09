@@ -20,14 +20,12 @@ const productModel_1 = __importDefault(require("../models/productModel"));
 // @access  Public
 exports.getAllProducts = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const products = yield productModel_1.default.find({});
+    if (!products) {
+        res.status(404);
+        return next(new Error('No products found'));
+    }
     // SEND RESPONSE
-    res.status(200).json({
-        status: 'success',
-        results: products.length,
-        data: {
-            data: products,
-        },
-    });
+    res.status(200).json(products);
 }));
 // @desc    Get single product
 // @route   GET /api/v1/products/:productId
@@ -35,10 +33,9 @@ exports.getAllProducts = (0, express_async_handler_1.default)((req, res, next) =
 exports.getProduct = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const productId = req.params.productId;
     const product = yield productModel_1.default.findById(productId);
-    if (product) {
-        res.status(200).json(product);
+    if (!product) {
+        res.status(404);
+        return next(new Error('Product not found'));
     }
-    else {
-        res.status(404).json({ message: 'Product not found' });
-    }
+    res.status(200).json(product);
 }));

@@ -9,14 +9,14 @@ import Product from '../models/productModel';
 export const getAllProducts = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const products = await Product.find({});
+
+    if (!products) {
+      res.status(404);
+      return next(new Error('No products found'));
+    }
+
     // SEND RESPONSE
-    res.status(200).json({
-      status: 'success',
-      results: products.length,
-      data: {
-        data: products,
-      },
-    });
+    res.status(200).json(products);
   }
 );
 
@@ -27,9 +27,10 @@ export const getProduct = asyncHandler(async (req: Request, res: Response, next:
   const productId = req.params.productId;
   const product = await Product.findById(productId);
 
-  if (product) {
-    res.status(200).json(product);
-  } else {
-    res.status(404).json({ message: 'Product not found' });
+  if (!product) {
+    res.status(404);
+    return next(new Error('Product not found'));
   }
+
+  res.status(200).json(product);
 });

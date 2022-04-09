@@ -1,41 +1,47 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row } from 'react-bootstrap';
 
 import Product from '../components/Product';
-import { ProductTypeObj } from '../interface/interface';
+import Message from '../components/Message';
+import Loader from '../components/Loader';
+import { listProducts } from '../store/actions/productActions';
+import { ProductTypeObj } from '../interface';
 
 // import products from '../products';
 
 const HomePage = () => {
-  const [products, setProducts] = useState<ProductTypeObj[] | []>([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios('/api/products');
-      setProducts(data.data.data);
-    };
+    dispatch(listProducts());
+  }, [dispatch]);
 
-    fetchProducts();
-  }, []);
+  const productList = useSelector((state: any) => state.productList);
+  const { products, loading, error } = productList;
+  // console.log(products);
+  // const [products, setProducts] = useState<ProductTypeObj[] | []>([]);
+
+  // useEffect(() => {
+  // const fetchProducts = async () => {
+  //   const { data } = await axios('/api/products');
+  //   setProducts(data.data.data);
+  // };
+  // fetchProducts();
+  // }, []);
 
   return (
     <>
       <h1>Latest Products</h1>
+      {loading && <Loader />}
+      {error && <Message variant='danger'>{error}</Message>}
       <Row>
-        {products.map(product => (
-          <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-            <Product
-              product={product}
-              // _id={product._id}
-              // image={product.image}
-              // name={product.name}
-              // rating={product.rating}
-              // numReviews={product.numReviews}
-              // price={product.price}
-            />
-          </Col>
-        ))}
+        {products &&
+          products.map((product: ProductTypeObj) => (
+            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+              <Product product={product} />
+            </Col>
+          ))}
       </Row>
     </>
   );
