@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap';
 import Message from '../components/Message';
-import { addToCart } from '../store/actions/cartActions';
+import { addToCart, removeFromCart } from '../store/actions/cartActions';
 
 const CartPage = () => {
   const params = useParams();
@@ -23,12 +23,12 @@ const CartPage = () => {
     }
   }, [dispatch, productId, qty]);
 
-  const removeFromCartHandler = (productId: string) => {
-    console.log('removeFromCartHandler', productId);
-  };
-
   const checkoutHandler = () => {
     navigate('/login?redirect=shipping');
+  };
+
+  const removeFromCartHandler = (productId: string) => {
+    dispatch(removeFromCart(productId));
   };
 
   return (
@@ -94,7 +94,7 @@ const CartPage = () => {
             <ListGroup.Item>
               <Button
                 type='button'
-                className='btn-block hover'
+                className='btn-block w-100 hover'
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
