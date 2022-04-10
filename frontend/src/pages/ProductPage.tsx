@@ -9,7 +9,7 @@ import Loader from '../components/Loader';
 import { listProductDetails } from '../store/actions/productActions';
 
 const ProductPage = () => {
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
