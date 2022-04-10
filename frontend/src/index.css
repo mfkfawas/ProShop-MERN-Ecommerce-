@@ -2,10 +2,38 @@ a {
   text-decoration: none;
 }
 
+h1 {
+  font-size: 1.8rem;
+  padding: 1rem 0;
+}
+
+h2 {
+  font-size: 1.4rem;
+  padding: 0.5rem 0;
+}
+
 h3 {
   padding: 0.5rem 0;
 }
 
 .rating span {
   margin: 0.1rem;
+}
+
+.hover {
+  border: none;
+  background: #343a40;
+  color: #fff;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  position: relative;
+  box-sizing: border-box;
+  transition: all 500ms ease;
+}
+
+.hover:hover {
+  color: #343a40;
+  border: #343a40 solid 1px;
+  background: #fff;
 }
