@@ -1,4 +1,5 @@
 import { ActionType } from '../actions/productActionType';
+import { CartActionType } from '../actions/cartActionType';
 
 // types of our state
 interface ProductTypeObj {
@@ -66,3 +67,15 @@ export type ProductActionType =
   | ProductDetailsRequest
   | ProductDetailsSuccess
   | ProductDetailsFail;
+
+interface CartAddItem {
+  type: CartActionType.CART_ADD_ITEM;
+  payload?: any;
+}
+
+interface CartRemoveItem {
+  type: CartActionType.CART_REMOVE_ITEM;
+  payload?: any;
+}
+
+export type CartActionTypes = CartAddItem | CartRemoveItem;
