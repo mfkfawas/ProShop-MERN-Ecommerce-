@@ -66,8 +66,6 @@ userSchema.methods.matchPassword = async function (
 };
 
 userSchema.methods.changedPasswordAfterTokenIssued = async function (JWTIssuedTimeStamp: number) {
-  //By default, we return false from this method. And that will then mean user has'nt changed his password
-  //after the token has been issued.
   if (this.passwordChangedAt) {
     const passwordLastChangedTimeStamp = this.passwordChangedAt.getTime() / 1000;
 

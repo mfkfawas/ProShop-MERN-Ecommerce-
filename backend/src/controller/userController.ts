@@ -30,6 +30,34 @@ export const authUser = asyncHandler(async (req: Request, res: Response, next: N
   });
 });
 
+// @desc    Register a new user
+// @route   POST /api/v1/users
+// @access  Public
+export const registerUser = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { name, email, password } = req.body;
+
+    // 1) Check if email already exist.
+    const userAlreadyExists = await User.findOne({ email });
+    if (userAlreadyExists) return next(new Error('User already exists'));
+
+    // 2) Create user
+    const user = await User.create({ name, email, password });
+    if (user) {
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        token: generateToken(user._id),
+      });
+    } else {
+      res.status(500);
+      next(new Error('User not created'));
+    }
+  }
+);
+
 // @desc    Get user profile
 // @route   GET /api/v1/users/profile
 // @access  Private

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserProfile = exports.authUser = void 0;
+exports.getUserProfile = exports.registerUser = exports.authUser = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const generateToken_1 = __importDefault(require("../utils/generateToken"));
 const userModel_1 = __importDefault(require("../models/userModel"));
@@ -37,6 +37,31 @@ exports.authUser = (0, express_async_handler_1.default)((req, res, next) => __aw
         isAdmin: user.isAdmin,
         token: (0, generateToken_1.default)(user._id),
     });
+}));
+// @desc    Register a new user
+// @route   POST /api/v1/users
+// @access  Public
+exports.registerUser = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name, email, password } = req.body;
+    // 1) Check if email already exist.
+    const userAlreadyExists = yield userModel_1.default.findOne({ email });
+    if (userAlreadyExists)
+        return next(new Error('User already exists'));
+    // 2) Create user
+    const user = yield userModel_1.default.create({ name, email, password });
+    if (user) {
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin,
+            token: (0, generateToken_1.default)(user._id),
+        });
+    }
+    else {
+        res.status(500);
+        next(new Error('User not created'));
+    }
 }));
 // @desc    Get user profile
 // @route   GET /api/v1/users/profile
