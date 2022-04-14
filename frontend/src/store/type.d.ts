@@ -68,14 +68,27 @@ export type ProductActionType =
   | ProductDetailsSuccess
   | ProductDetailsFail;
 
+export interface CartItemType {
+  cartItems:
+    | {
+        product: string;
+        name: string;
+        image: string;
+        price: number;
+        countInStock: number;
+        qty: number;
+      }[]
+    | [];
+}
+
 interface CartAddItem {
   type: CartActionType.CART_ADD_ITEM;
-  payload?: any;
+  payload: any;
 }
 
 interface CartRemoveItem {
   type: CartActionType.CART_REMOVE_ITEM;
-  payload?: any;
+  payload: any;
 }
 
 export type CartActionTypes = CartAddItem | CartRemoveItem;

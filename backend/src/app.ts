@@ -3,8 +3,11 @@ import cors from 'cors';
 
 import globalErrorHandler from './middleware/globalErrorHandler';
 import productRouter from './routes/productRoute';
+import userRouter from './routes/userRoute';
 
 const app = express();
+
+app.use(express.json());
 
 app.use(
   cors({
@@ -13,6 +16,7 @@ app.use(
 );
 
 app.use('/api/v1/products', productRouter);
+app.use('/api/v1/users', userRouter);
 
 //
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
