@@ -22,8 +22,10 @@ const userModel_1 = __importDefault(require("../models/userModel"));
 exports.authUser = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     // 1) Check if email and password exist.
-    if (!email || !password)
+    if (!email || !password) {
+        res.status(401);
         return next(new Error('Please provide email & password'));
+    }
     // 2) Check user exists && password is correct
     const user = yield userModel_1.default.findOne({ email }).select('+password');
     if (!user || !(yield user.matchPassword(password, user.password))) {
