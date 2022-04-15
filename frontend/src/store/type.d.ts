@@ -1,5 +1,6 @@
-import { ActionType } from '../actions/productActionType';
-import { CartActionType } from '../actions/cartActionType';
+import { ActionType } from './actions/productActionType';
+import { CartActionType } from './actions/cartActionType';
+import { UserActionType } from './actions/userActionType';
 
 // types of our state
 interface ProductTypeObj {
@@ -92,3 +93,25 @@ interface CartRemoveItem {
 }
 
 export type CartActionTypes = CartAddItem | CartRemoveItem;
+
+interface UserLoginRequest {
+  type: UserActionType.USER_LOGIN_REQUEST;
+}
+
+interface UserLoginSuccess {
+  type: UserActionType.USER_LOGIN_SUCCESS;
+  payload: any;
+}
+interface UserLoginFail {
+  type: UserActionType.USER_LOGIN_FAIL;
+  payload: any;
+}
+interface UserLogout {
+  type: UserActionType.USER_LOGOUT;
+}
+
+export type UserActionTypes =
+  | UserLoginRequest
+  | UserLoginSuccess
+  | UserLoginFail
+  | UserLogout;

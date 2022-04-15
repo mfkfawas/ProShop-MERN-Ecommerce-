@@ -45,9 +45,8 @@ const userSchema = new mongoose.Schema(
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
 
-  this.password = await bcrypt.hash(this.password, 12);
-
-  // this.passwordConfirm = undefined
+  const salt = await bcrypt.genSalt(process.env.SALT_ROUNDS);
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
 //Update changePasswordAt property of the user
@@ -65,7 +64,9 @@ userSchema.methods.matchPassword = async function (
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-userSchema.methods.changedPasswordAfterTokenIssued = async function (JWTIssuedTimeStamp: number) {
+userSchema.methods.changedPasswordAfterTokenIssued = async function (
+  JWTIssuedTimeStamp: number
+) {
   if (this.passwordChangedAt) {
     const passwordLastChangedTimeStamp = this.passwordChangedAt.getTime() / 1000;
 

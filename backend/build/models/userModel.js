@@ -46,8 +46,8 @@ userSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!this.isModified('password'))
             return next();
-        this.password = yield bcrypt.hash(this.password, 12);
-        // this.passwordConfirm = undefined
+        const salt = yield bcrypt.genSalt(process.env.SALT_ROUNDS);
+        this.password = yield bcrypt.hash(this.password, salt);
     });
 });
 //Update changePasswordAt property of the user
@@ -66,8 +66,6 @@ userSchema.methods.matchPassword = function (candidatePassword, userPassword) {
 };
 userSchema.methods.changedPasswordAfterTokenIssued = function (JWTIssuedTimeStamp) {
     return __awaiter(this, void 0, void 0, function* () {
-        //By default, we return false from this method. And that will then mean user has'nt changed his password
-        //after the token has been issued.
         if (this.passwordChangedAt) {
             const passwordLastChangedTimeStamp = this.passwordChangedAt.getTime() / 1000;
             return JWTIssuedTimeStamp < passwordLastChangedTimeStamp;
