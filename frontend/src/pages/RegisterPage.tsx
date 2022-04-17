@@ -5,18 +5,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
-import { login } from '../store/actions/userActions';
+import { register } from '../store/actions/userActions';
 
-const LoginPage = () => {
+const RegisterPage = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState<string | null>(null);
 
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const userLogin = useSelector((state: any) => state.userLogin);
-  const { loading, error, userInfo } = userLogin;
+  const userRegister = useSelector((state: any) => state.userRegister);
+  const { loading, error, userInfo } = userRegister;
 
   const redirect = location.search ? location.search.split('=')[1] : '/';
 
@@ -28,15 +31,33 @@ const LoginPage = () => {
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    if (password !== confirmPassword) {
+      setMessage('Passwords do not match');
+      return;
+    } else {
+      setMessage('');
+      dispatch(register(name, email, password));
+    }
   };
 
   return (
     <FormContainer>
-      <h1>Sign In</h1>
+      <h1>Sign Up</h1>
+      {message && <Message variant='danger'>{message}</Message>}
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
+        <Form.Group controlId='name' className='margin-bottom'>
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type='name'
+            placeholder='Enter name'
+            autoComplete='on'
+            value={name}
+            onChange={e => setName(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+
         <Form.Group controlId='email' className='margin-bottom'>
           <Form.Label>Email Address</Form.Label>
           <Form.Control
@@ -59,21 +80,30 @@ const LoginPage = () => {
           ></Form.Control>
         </Form.Group>
 
+        <Form.Group controlId='confirmPassword' className='margin-bottom'>
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            type='password'
+            placeholder='Confirm password'
+            autoComplete='on'
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+
         <Button type='submit' variant='primary' className='margin-bottom hover'>
-          Sign In
+          Register
         </Button>
       </Form>
 
       <Row className='py-6'>
         <Col>
-          New Customer?{' '}
-          <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-            Register
-          </Link>
+          Have an account?{' '}
+          <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>Login</Link>
         </Col>
       </Row>
     </FormContainer>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

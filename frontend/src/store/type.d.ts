@@ -110,8 +110,24 @@ interface UserLogout {
   type: UserActionType.USER_LOGOUT;
 }
 
+interface UserRegisterRequest {
+  type: UserActionType.USER_REGISTER_REQUEST;
+}
+
+interface UserRegisterSuccess {
+  type: UserActionType.USER_REGISTER_SUCCESS;
+  payload: any;
+}
+interface UserRegisterFail {
+  type: UserActionType.USER_REGISTER_FAIL;
+  payload: any;
+}
+
 export type UserActionTypes =
   | UserLoginRequest
   | UserLoginSuccess
   | UserLoginFail
-  | UserLogout;
+  | UserLogout
+  | UserRegisterRequest
+  | UserRegisterSuccess
+  | UserRegisterFail;

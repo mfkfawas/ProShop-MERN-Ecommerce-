@@ -42,12 +42,15 @@ const userSchema = new mongoose_1.default.Schema({
 }, {
     timestamps: true,
 });
+userSchema.index({ email: 1 });
 userSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!this.isModified('password'))
             return next();
-        const salt = yield bcrypt.genSalt(process.env.SALT_ROUNDS);
+        console.log('matchPassword');
+        const salt = yield bcrypt.genSalt(Number(process.env.SALT_ROUNDS));
         this.password = yield bcrypt.hash(this.password, salt);
+        next();
     });
 });
 //Update changePasswordAt property of the user
@@ -66,8 +69,9 @@ userSchema.methods.matchPassword = function (candidatePassword, userPassword) {
 };
 userSchema.methods.changedPasswordAfterTokenIssued = function (JWTIssuedTimeStamp) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (this.passwordChangedAt) {
-            const passwordLastChangedTimeStamp = this.passwordChangedAt.getTime() / 1000;
+        const user = this;
+        if (user.passwordChangedAt) {
+            const passwordLastChangedTimeStamp = user.passwordChangedAt.getTime() / 1000;
             return JWTIssuedTimeStamp < passwordLastChangedTimeStamp;
         }
         return false;

@@ -2,13 +2,19 @@ import mongoose, { Document } from 'mongoose';
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
-interface UserType extends Document {
+export interface UserType {
   name: string;
   email: string;
   password: string;
   isAdmin: boolean;
-  matchPassword: (candidatePassword: string, userPassword: string) => Promise<boolean>;
-  changedPasswordAfterTokenIssued: (JWTIssuedTimeStamp: number) => Promise<boolean>;
+  passwordChangedAt?: any;
+}
+
+export interface UserDocument extends UserType, Document {
+  createdAt: Date;
+  updatedAt: Date;
+  matchPassword(candidatePassword: string, userPassword: string): Promise<boolean>;
+  changedPasswordAfterTokenIssued(JWTIssuedTimeStamp: number): Promise<boolean>;
 }
 
 const userSchema = new mongoose.Schema(
@@ -42,15 +48,19 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.pre('save', async function (next) {
+userSchema.index({ email: 1 });
+
+userSchema.pre('save', async function (this: UserDocument, next) {
   if (!this.isModified('password')) return next();
 
-  const salt = await bcrypt.genSalt(process.env.SALT_ROUNDS);
+  const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS));
   this.password = await bcrypt.hash(this.password, salt);
+
+  next();
 });
 
 //Update changePasswordAt property of the user
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function (this: UserDocument, next) {
   if (!this.isModified('password') || this.isNew) return next();
 
   this.passwordChangedAt = Date.now() - 1000;
@@ -60,13 +70,14 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.matchPassword = async function (
   candidatePassword: string,
   userPassword: string
-) {
+): Promise<boolean> {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
 userSchema.methods.changedPasswordAfterTokenIssued = async function (
+  this: UserDocument,
   JWTIssuedTimeStamp: number
-) {
+): Promise<boolean> {
   if (this.passwordChangedAt) {
     const passwordLastChangedTimeStamp = this.passwordChangedAt.getTime() / 1000;
 
@@ -76,6 +87,6 @@ userSchema.methods.changedPasswordAfterTokenIssued = async function (
   return false;
 };
 
-const User = mongoose.model<UserType>('User', userSchema);
+const User = mongoose.model<UserDocument>('User', userSchema);
 
 export default User;

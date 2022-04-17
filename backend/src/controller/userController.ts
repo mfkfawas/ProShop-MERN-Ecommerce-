@@ -48,6 +48,7 @@ export const registerUser = asyncHandler(
 
     // 2) Create user
     const user = await User.create({ name, email, password });
+
     if (user) {
       res.status(200).json({
         _id: user._id,
