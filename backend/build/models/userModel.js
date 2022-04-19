@@ -47,7 +47,6 @@ userSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!this.isModified('password'))
             return next();
-        console.log('matchPassword');
         const salt = yield bcrypt.genSalt(Number(process.env.SALT_ROUNDS));
         this.password = yield bcrypt.hash(this.password, salt);
         next();
@@ -69,9 +68,8 @@ userSchema.methods.matchPassword = function (candidatePassword, userPassword) {
 };
 userSchema.methods.changedPasswordAfterTokenIssued = function (JWTIssuedTimeStamp) {
     return __awaiter(this, void 0, void 0, function* () {
-        const user = this;
-        if (user.passwordChangedAt) {
-            const passwordLastChangedTimeStamp = user.passwordChangedAt.getTime() / 1000;
+        if (this.passwordChangedAt) {
+            const passwordLastChangedTimeStamp = this.passwordChangedAt.getTime() / 1000;
             return JWTIssuedTimeStamp < passwordLastChangedTimeStamp;
         }
         return false;

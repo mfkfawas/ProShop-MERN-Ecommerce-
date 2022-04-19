@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserProfile = exports.registerUser = exports.authUser = void 0;
+exports.updatePassword = exports.updateUserProfile = exports.getUserProfile = exports.registerUser = exports.authUser = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const generateToken_1 = __importDefault(require("../utils/generateToken"));
 const userModel_1 = __importDefault(require("../models/userModel"));
@@ -75,5 +75,53 @@ exports.getUserProfile = (0, express_async_handler_1.default)((req, res, next) =
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
+    });
+}));
+const filterObj = (obj, ...allowedFields) => {
+    const newObj = {};
+    Object.keys(obj).forEach(el => {
+        if (allowedFields.includes(el))
+            newObj[el] = obj[el];
+    });
+    return newObj;
+};
+// @desc    Update user profile
+// @route   PUT /api/v1/users/profile
+// @access  Private
+exports.updateUserProfile = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.body.password) {
+        res.status(400);
+        return next(new Error('This route is not for password updates. Please use /updateMyPassword'));
+    }
+    const filteredBody = filterObj(req.body, 'name', 'email');
+    const updatedUser = yield userModel_1.default.findByIdAndUpdate(req.user.id, filteredBody, {
+        new: true,
+        runValidators: true,
+    });
+    res.status(200).json({
+        status: 'success',
+        data: {
+            user: updatedUser,
+        },
+    });
+}));
+exports.updatePassword = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    // 1) Get the user from the collection.
+    const user = yield userModel_1.default.findById(req.user.id).select('+password');
+    // 2) Check if the POSTed password is correct.
+    if (!(yield user.matchPassword(req.body.currentPassword, user.password))) {
+        res.status(401);
+        return next(new Error('The password you entered does not match!'));
+    }
+    // 3) If so, update the password.
+    user.password = req.body.newPassword;
+    yield user.save();
+    // 4) Log the user in, send the JWT.
+    res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        token: (0, generateToken_1.default)(user._id),
     });
 }));

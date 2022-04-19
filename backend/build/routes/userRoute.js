@@ -9,5 +9,6 @@ const authMiddleware_1 = __importDefault(require("../middleware/authMiddleware")
 const router = express_1.default.Router();
 router.route('/').post(userController_1.registerUser);
 router.route('/login').post(userController_1.authUser);
-router.route('/profile').get(authMiddleware_1.default, userController_1.getUserProfile);
+router.route('/profile').get(authMiddleware_1.default, userController_1.getUserProfile).patch(authMiddleware_1.default, userController_1.updateUserProfile);
+router.patch('/updateMyPassword', authMiddleware_1.default, userController_1.updatePassword);
 exports.default = router;

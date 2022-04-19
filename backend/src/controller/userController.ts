@@ -79,3 +79,65 @@ export const getUserProfile = asyncHandler(
     });
   }
 );
+
+const filterObj = (obj: any, ...allowedFields: any) => {
+  const newObj = {} as any;
+  Object.keys(obj).forEach(el => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+  return newObj;
+};
+
+// @desc    Update user profile
+// @route   PUT /api/v1/users/profile
+// @access  Private
+export const updateUserProfile = asyncHandler(
+  async (req: any, res: Response, next: NextFunction) => {
+    if (req.body.password) {
+      res.status(400);
+      return next(
+        new Error('This route is not for password updates. Please use /updateMyPassword')
+      );
+    }
+
+    const filteredBody = filterObj(req.body, 'name', 'email');
+
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user: updatedUser,
+      },
+    });
+  }
+);
+
+export const updatePassword = asyncHandler(
+  async (req: any, res: Response, next: NextFunction) => {
+    // 1) Get the user from the collection.
+    const user: any = await User.findById(req.user.id).select('+password');
+
+    // 2) Check if the POSTed password is correct.
+    if (!(await user.matchPassword(req.body.currentPassword, user.password))) {
+      res.status(401);
+      return next(new Error('The password you entered does not match!'));
+    }
+
+    // 3) If so, update the password.
+    user.password = req.body.newPassword;
+    await user.save();
+
+    // 4) Log the user in, send the JWT.
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id),
+    });
+  }
+);
