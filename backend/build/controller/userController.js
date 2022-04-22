@@ -94,15 +94,16 @@ exports.updateUserProfile = (0, express_async_handler_1.default)((req, res, next
         return next(new Error('This route is not for password updates. Please use /updateMyPassword'));
     }
     const filteredBody = filterObj(req.body, 'name', 'email');
-    const updatedUser = yield userModel_1.default.findByIdAndUpdate(req.user.id, filteredBody, {
+    const updatedUser = (yield userModel_1.default.findByIdAndUpdate(req.user.id, filteredBody, {
         new: true,
         runValidators: true,
-    });
+    }));
     res.status(200).json({
-        status: 'success',
-        data: {
-            user: updatedUser,
-        },
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+        token: (0, generateToken_1.default)(updatedUser._id),
     });
 }));
 exports.updatePassword = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -114,7 +115,7 @@ exports.updatePassword = (0, express_async_handler_1.default)((req, res, next) =
         return next(new Error('The password you entered does not match!'));
     }
     // 3) If so, update the password.
-    user.password = req.body.newPassword;
+    user.password = req.body.password;
     yield user.save();
     // 4) Log the user in, send the JWT.
     res.status(200).json({

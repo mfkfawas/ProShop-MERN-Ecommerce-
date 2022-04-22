@@ -1,27 +1,16 @@
-import React, { useEffect } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap';
 import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../store/actions/cartActions';
 
 const CartPage = () => {
-  const params = useParams();
-  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const cart = useSelector((state: any) => state.cart);
   const { cartItems } = cart;
-
-  const productId = params.id;
-  const qty = location.search ? Number(location.search.split('=')[1]) : 1;
-
-  useEffect(() => {
-    if (productId) {
-      dispatch(addToCart(productId, qty));
-    }
-  }, [dispatch, productId, qty]);
 
   const checkoutHandler = () => {
     navigate('/login?redirect=shipping');
@@ -55,7 +44,9 @@ const CartPage = () => {
                     <Form.Control
                       as='select'
                       value={item.qty}
-                      onChange={e => dispatch(addToCart(item.product, Number(e.target.value)))}
+                      onChange={e =>
+                        dispatch(addToCart(item.product, Number(e.target.value)))
+                      }
                     >
                       {[...Array(item.countInStock).keys()].map(x => (
                         <option key={x + 1} value={x + 1}>
@@ -84,7 +75,8 @@ const CartPage = () => {
           <ListGroup variant='flush'>
             <ListGroup.Item>
               <h2>
-                Subtotal ({cartItems.reduce((acc: number, item: any) => acc + item.qty, 0)}) items
+                Subtotal (
+                {cartItems.reduce((acc: number, item: any) => acc + item.qty, 0)}) items
               </h2>
               $
               {cartItems

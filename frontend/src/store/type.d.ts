@@ -123,6 +123,36 @@ interface UserRegisterFail {
   payload: any;
 }
 
+interface UserDetailsRequest {
+  type: UserActionType.USER_DETAILS_REQUEST;
+}
+
+interface UserDetailsSuccess {
+  type: UserActionType.USER_DETAILS_SUCCESS;
+  payload: any;
+}
+interface UserDetailsFail {
+  type: UserActionType.USER_DETAILS_FAIL;
+  payload: any;
+}
+
+interface UserUpdateProfileRequest {
+  type: UserActionType.USER_UPDATE_PROFILE_REQUEST;
+}
+
+interface UserUpdateProfileSuccess {
+  type: UserActionType.USER_UPDATE_PROFILE_SUCCESS;
+  payload: any;
+}
+interface UserUpdateProfileFail {
+  type: UserActionType.USER_UPDATE_PROFILE_FAIL;
+  payload: any;
+}
+
+interface UserUpdateProfileReset {
+  type: UserActionType.USER_UPDATE_PROFILE_RESET;
+}
+
 export type UserActionTypes =
   | UserLoginRequest
   | UserLoginSuccess
@@ -130,4 +160,11 @@ export type UserActionTypes =
   | UserLogout
   | UserRegisterRequest
   | UserRegisterSuccess
-  | UserRegisterFail;
+  | UserRegisterFail
+  | UserDetailsRequest
+  | UserDetailsSuccess
+  | UserDetailsFail
+  | UserUpdateProfileRequest
+  | UserUpdateProfileSuccess
+  | UserUpdateProfileFail
+  | UserUpdateProfileReset;

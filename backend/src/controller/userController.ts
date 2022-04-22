@@ -102,16 +102,17 @@ export const updateUserProfile = asyncHandler(
 
     const filteredBody = filterObj(req.body, 'name', 'email');
 
-    const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+    const updatedUser = (await User.findByIdAndUpdate(req.user.id, filteredBody, {
       new: true,
       runValidators: true,
-    });
+    })) as any;
 
     res.status(200).json({
-      status: 'success',
-      data: {
-        user: updatedUser,
-      },
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      token: generateToken(updatedUser._id),
     });
   }
 );
@@ -128,7 +129,7 @@ export const updatePassword = asyncHandler(
     }
 
     // 3) If so, update the password.
-    user.password = req.body.newPassword;
+    user.password = req.body.password;
     await user.save();
 
     // 4) Log the user in, send the JWT.

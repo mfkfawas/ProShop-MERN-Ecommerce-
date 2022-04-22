@@ -7,6 +7,7 @@ import Rating from '../components/Rating';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { listProductDetails } from '../store/actions/productActions';
+import { addToCart } from '../store/actions/cartActions';
 
 const ProductPage = () => {
   const [qty, setQty] = useState(1);
@@ -24,7 +25,8 @@ const ProductPage = () => {
   const { product, loading, error } = productDetails;
 
   const addToCartHandler = () => {
-    navigate('/cart/' + id + '?qty=' + qty);
+    dispatch(addToCart(product._id, qty));
+    navigate('/cart');
   };
 
   // const location = useLocation();
