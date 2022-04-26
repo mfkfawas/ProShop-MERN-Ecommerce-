@@ -13,7 +13,7 @@ const CartPage = () => {
   const { cartItems } = cart;
 
   const checkoutHandler = () => {
-    navigate('/login?redirect=shipping');
+    navigate('/shipping');
   };
 
   const removeFromCartHandler = (productId: string) => {

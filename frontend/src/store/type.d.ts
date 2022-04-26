@@ -92,7 +92,21 @@ interface CartRemoveItem {
   payload: any;
 }
 
-export type CartActionTypes = CartAddItem | CartRemoveItem;
+interface CartSaveShippingAddress {
+  type: CartActionType.CART_SAVE_SHIPPING_ADDRESS;
+  payload: any;
+}
+
+interface CartSavePaymentMethod {
+  type: CartActionType.CART_SAVE_PAYMENT_METHOD;
+  payload: any;
+}
+
+export type CartActionTypes =
+  | CartAddItem
+  | CartRemoveItem
+  | CartSaveShippingAddress
+  | CartSavePaymentMethod;
 
 interface UserLoginRequest {
   type: UserActionType.USER_LOGIN_REQUEST;

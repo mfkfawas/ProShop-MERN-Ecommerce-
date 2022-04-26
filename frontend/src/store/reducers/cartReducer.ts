@@ -12,10 +12,20 @@ interface cartInitialStateInterface {
         qty: number;
       }[]
     | [];
+
+  shippingAddress:
+    | {
+        address: string;
+        city: string;
+        postalCode: string;
+        country: string;
+      }
+    | {};
 }
 
 const cartInitialState: cartInitialStateInterface = {
   cartItems: [],
+  shippingAddress: {},
 };
 
 export const cartReducer = (state = cartInitialState, action: CartActionTypes) => {
@@ -28,7 +38,9 @@ export const cartReducer = (state = cartInitialState, action: CartActionTypes) =
       if (existItem) {
         return {
           ...state,
-          cartItems: state.cartItems.map(x => (x.product === existItem.product ? item : x)),
+          cartItems: state.cartItems.map(x =>
+            x.product === existItem.product ? item : x
+          ),
         };
       } else {
         return {
@@ -41,6 +53,19 @@ export const cartReducer = (state = cartInitialState, action: CartActionTypes) =
         ...state,
         cartItems: state.cartItems.filter(x => x.product !== action.payload),
       };
+
+    case CartActionType.CART_SAVE_SHIPPING_ADDRESS:
+      return {
+        ...state,
+        shippingAddress: action.payload,
+      };
+
+    case CartActionType.CART_SAVE_PAYMENT_METHOD:
+      return {
+        ...state,
+        PaymentMethod: action.payload,
+      };
+
     default:
       return state;
   }
