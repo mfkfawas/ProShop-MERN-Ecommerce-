@@ -65,7 +65,7 @@ const ProfilePage = () => {
         {success && <Message variant='success'>Profile Updated</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
-          <Form.Group controlId='name'>
+          <Form.Group controlId='name' className='margin-bottom'>
             <Form.Label>Name</Form.Label>
             <Form.Control
               type='name'
@@ -75,7 +75,7 @@ const ProfilePage = () => {
             ></Form.Control>
           </Form.Group>
 
-          <Form.Group controlId='email'>
+          <Form.Group controlId='email' className='margin-bottom'>
             <Form.Label>Email Address</Form.Label>
             <Form.Control
               type='email'
@@ -85,7 +85,7 @@ const ProfilePage = () => {
             ></Form.Control>
           </Form.Group>
 
-          <Form.Group controlId='currentPassword'>
+          <Form.Group controlId='currentPassword' className='margin-bottom'>
             <Form.Label>Current Password</Form.Label>
             <Form.Control
               type='password'
@@ -96,7 +96,7 @@ const ProfilePage = () => {
             ></Form.Control>
           </Form.Group>
 
-          <Form.Group controlId='password'>
+          <Form.Group controlId='password' className='margin-bottom'>
             <Form.Label>New Password</Form.Label>
             <Form.Control
               type='password'
@@ -107,7 +107,7 @@ const ProfilePage = () => {
             ></Form.Control>
           </Form.Group>
 
-          <Form.Group controlId='confirmPassword'>
+          <Form.Group controlId='confirmPassword' className='margin-bottom'>
             <Form.Label>Confirm New Password</Form.Label>
             <Form.Control
               type='password'
@@ -118,7 +118,7 @@ const ProfilePage = () => {
             ></Form.Control>
           </Form.Group>
 
-          <Button type='submit' variant='primary'>
+          <Button type='submit' variant='primary' className='hover'>
             Update
           </Button>
         </Form>

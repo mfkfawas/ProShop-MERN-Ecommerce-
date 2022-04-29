@@ -20,9 +20,16 @@ h3 {
   margin: 0.1rem;
 }
 
+.bold {
+  font-weight: 300;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  margin-right: 1rem;
+}
+
 .hover {
-  border: none;
-  background: #343a40;
+  border: #000 solid 1px;
+  background: #000;
   color: #fff;
   padding: 10px 15px;
   font-size: 0.8rem;
@@ -34,7 +41,7 @@ h3 {
 
 .hover:hover {
   color: #343a40;
-  border: #343a40 solid 1px;
+
   background: #fff;
 }
 

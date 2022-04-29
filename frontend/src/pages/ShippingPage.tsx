@@ -3,8 +3,8 @@ import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import FormContainer from '../components/FormContainer';
-import { saveShippingAddress } from '../store/actions/cartActions';
 import CheckoutSteps from '../components/CheckoutSteps';
+import { saveShippingAddress } from '../store/actions/cartActions';
 
 const ShippingPage = () => {
   const dispatch = useDispatch();

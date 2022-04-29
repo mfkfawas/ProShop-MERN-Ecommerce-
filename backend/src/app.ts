@@ -4,6 +4,7 @@ import cors from 'cors';
 import globalErrorHandler from './middleware/globalErrorHandler';
 import productRouter from './routes/productRoute';
 import userRouter from './routes/userRoute';
+import orderRouter from './routes/orderRoute';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(
 
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/orders', orderRouter);
 
 //
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
