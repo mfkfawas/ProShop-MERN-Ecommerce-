@@ -1,6 +1,7 @@
 import { ActionType } from './actions/productActionType';
 import { CartActionType } from './actions/cartActionType';
 import { UserActionType } from './actions/userActionType';
+import { OrderActionType } from './actions/orderActionType';
 
 // types of our state
 interface ProductTypeObj {
@@ -182,3 +183,42 @@ export type UserActionTypes =
   | UserUpdateProfileSuccess
   | UserUpdateProfileFail
   | UserUpdateProfileReset;
+
+interface OrderCreateRequest {
+  type: OrderActionType.ORDER_CREATE_REQUEST;
+}
+interface OrderCreateSuccess {
+  type: OrderActionType.ORDER_CREATE_SUCCESS;
+  payload: any;
+}
+
+interface OrderCreateFail {
+  type: OrderActionType.ORDER_CREATE_FAIL;
+  payload: any;
+}
+
+interface OrderCreateReset {
+  type: OrderActionType.ORDER_CREATE_RESET;
+}
+
+interface OrderDetailsRequest {
+  type: OrderActionType.ORDER_DETAILS_REQUEST;
+}
+interface OrderDetailsSuccess {
+  type: OrderActionType.ORDER_DETAILS_SUCCESS;
+  payload: any;
+}
+
+interface OrderDetailsFail {
+  type: OrderActionType.ORDER_DETAILS_FAIL;
+  payload: any;
+}
+
+export type OrderActionTypes =
+  | OrderCreateRequest
+  | OrderCreateSuccess
+  | OrderCreateFail
+  | OrderCreateReset
+  | OrderDetailsRequest
+  | OrderDetailsSuccess
+  | OrderDetailsFail;
