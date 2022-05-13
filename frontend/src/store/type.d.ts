@@ -214,6 +214,23 @@ interface OrderDetailsFail {
   payload: any;
 }
 
+interface OrderPayRequest {
+  type: OrderActionType.ORDER_PAY_REQUEST;
+}
+interface OrderPaySuccess {
+  type: OrderActionType.ORDER_PAY_SUCCESS;
+  payload: boolean;
+}
+
+interface OrderPayFail {
+  type: OrderActionType.ORDER_PAY_FAIL;
+  payload: any;
+}
+
+interface OrderPayReset {
+  type: OrderActionType.ORDER_PAY_RESET;
+}
+
 export type OrderActionTypes =
   | OrderCreateRequest
   | OrderCreateSuccess
@@ -221,4 +238,8 @@ export type OrderActionTypes =
   | OrderCreateReset
   | OrderDetailsRequest
   | OrderDetailsSuccess
-  | OrderDetailsFail;
+  | OrderDetailsFail
+  | OrderPayRequest
+  | OrderPaySuccess
+  | OrderPayFail
+  | OrderPayReset;

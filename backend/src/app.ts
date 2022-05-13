@@ -20,6 +20,10 @@ app.use('/api/v1/products', productRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/orders', orderRouter);
 
+app.get('/api/config/paypal', (req: Request, res: Response) =>
+  res.send(process.env.PAYPAL_CLIENT_ID)
+);
+
 //
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
   res.status(404);

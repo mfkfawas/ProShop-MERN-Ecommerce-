@@ -17,6 +17,7 @@ app.use((0, cors_1.default)({
 app.use('/api/v1/products', productRoute_1.default);
 app.use('/api/v1/users', userRoute_1.default);
 app.use('/api/v1/orders', orderRoute_1.default);
+app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID));
 //
 app.all('*', (req, res, next) => {
     res.status(404);

@@ -8,6 +8,7 @@ const orderItemsSchema = new mongoose_1.default.Schema({
     name: { type: String, required: [true, 'Please provide the name of the product'] },
     qty: { type: Number, required: [true, 'Please provide the quantity of the product'] },
     price: { type: Number, required: [true, 'Please provide the price of the product'] },
+    image: { type: String, required: [true, 'Please provide the image of the product'] },
     product: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         required: [true, 'Please provide the product'],
@@ -24,7 +25,10 @@ const orderSchema = new mongoose_1.default.Schema({
     shippingAddress: {
         address: { type: String, required: [true, 'Please provide the shipping address.'] },
         city: { type: String, required: [true, 'Please provide the shipping city.'] },
-        postalCode: { type: String, required: [true, 'Please provide the shipping postal code.'] },
+        postalCode: {
+            type: String,
+            required: [true, 'Please provide the shipping postal code.'],
+        },
         country: { type: String, required: [true, 'Please provide the shipping country.'] },
     },
     paymentMethod: {

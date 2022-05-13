@@ -91,3 +91,40 @@ export const getOrderDetails =
       });
     }
   };
+
+export const payOrder =
+  (orderId: any, paymentResult: any) =>
+  async (dispatch: Dispatch<OrderActionTypes>, getState: any) => {
+    try {
+      dispatch({
+        type: OrderActionType.ORDER_PAY_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.patch(
+        `/api/v1/orders/${orderId}/pay`,
+        paymentResult,
+        config
+      );
+
+      dispatch({
+        type: OrderActionType.ORDER_PAY_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: OrderActionType.ORDER_PAY_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+    }
+  };
