@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateOrderToPaid = exports.getOrderById = exports.addOrderItems = void 0;
+exports.getMyOrders = exports.updateOrderToPaid = exports.getOrderById = exports.addOrderItems = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const orderModel_1 = __importDefault(require("../models/orderModel"));
 // @desc    Create new order
@@ -67,4 +67,11 @@ exports.updateOrderToPaid = (0, express_async_handler_1.default)((req, res, next
         const updatedOrder = yield order.save();
         res.status(200).json(updatedOrder);
     }
+}));
+// @desc    Get logged in user's orders
+// @route   GET /api/v1/orders/myorders
+// @access  Private
+exports.getMyOrders = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const orders = yield orderModel_1.default.find({ user: req.user._id });
+    res.status(200).json(orders);
 }));

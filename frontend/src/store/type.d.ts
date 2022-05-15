@@ -231,6 +231,19 @@ interface OrderPayReset {
   type: OrderActionType.ORDER_PAY_RESET;
 }
 
+interface OrderListMyRequest {
+  type: OrderActionType.ORDER_LIST_MY_REQUEST;
+}
+interface OrderListMySuccess {
+  type: OrderActionType.ORDER_LIST_MY_SUCCESS;
+  payload: any;
+}
+
+interface OrderListMyFail {
+  type: OrderActionType.ORDER_LIST_MY_FAIL;
+  payload: any;
+}
+
 export type OrderActionTypes =
   | OrderCreateRequest
   | OrderCreateSuccess
@@ -242,4 +255,7 @@ export type OrderActionTypes =
   | OrderPayRequest
   | OrderPaySuccess
   | OrderPayFail
-  | OrderPayReset;
+  | OrderPayReset
+  | OrderListMyRequest
+  | OrderListMySuccess
+  | OrderListMyFail;

@@ -58,8 +58,8 @@ const OrderPage = () => {
       }
     }
   }, [dispatch, params.id, order, orderId, successPay]);
+
   const successPaymentHandler = (paymentResult: any) => {
-    console.log(paymentResult);
     dispatch(payOrder(orderId, paymentResult));
   };
 
