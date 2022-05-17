@@ -146,7 +146,7 @@ export const listMyOrders =
         },
       };
 
-      const { data } = await axios.patch(`/api/v1/orders/myorders`, config);
+      const { data } = await axios.get(`/api/v1/orders/myorders`, config);
 
       dispatch({
         type: OrderActionType.ORDER_LIST_MY_SUCCESS,

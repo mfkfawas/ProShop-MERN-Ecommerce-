@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { UserActionType } from './userActionType';
-import { UserActionTypes } from '../type';
+import { OrderActionType } from './orderActionType';
+import { UserActionTypes, OrderActionTypes } from '../type';
 
 export const login =
   (email: string, password: string) => async (dispatch: Dispatch<UserActionTypes>) => {
@@ -36,10 +37,13 @@ export const login =
     }
   };
 
-export const logout = () => async (dispatch: Dispatch<UserActionTypes>) => {
-  localStorage.removeItem('userInfo');
-  dispatch({ type: UserActionType.USER_LOGOUT });
-};
+export const logout =
+  () => async (dispatch: Dispatch<UserActionTypes | OrderActionTypes>) => {
+    localStorage.removeItem('userInfo');
+    dispatch({ type: UserActionType.USER_LOGOUT });
+    dispatch({ type: UserActionType.USER_DETAILS_RESET });
+    dispatch({ type: OrderActionType.ORDER_LIST_MY_RESET });
+  };
 
 export const register =
   (name: string, email: string, password: string) =>

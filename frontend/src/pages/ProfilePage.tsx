@@ -49,7 +49,7 @@ const ProfilePage = () => {
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
-    const newPassword = password.trim().length > 0 ? password : null;
+    const newPassword = password.trim().length > 0 ? password.trim() : null;
 
     if (newPassword && newPassword !== confirmPassword) {
       setMessage('Passwords do not match');
@@ -77,7 +77,9 @@ const ProfilePage = () => {
               type='name'
               placeholder='Enter name'
               value={name}
-              onChange={e => setName(e.target.value)}
+              onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
+                setName(e.target.value)
+              }
             ></Form.Control>
           </Form.Group>
 
@@ -87,7 +89,9 @@ const ProfilePage = () => {
               type='email'
               placeholder='Enter email'
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
+                setEmail(e.target.value)
+              }
             ></Form.Control>
           </Form.Group>
 
@@ -98,7 +102,9 @@ const ProfilePage = () => {
               placeholder='Current Password'
               autoComplete='on'
               value={currentPassword}
-              onChange={e => setCurrentPassword(e.target.value)}
+              onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
+                setCurrentPassword(e.target.value)
+              }
             ></Form.Control>
           </Form.Group>
 
@@ -109,7 +115,9 @@ const ProfilePage = () => {
               placeholder='New Password'
               autoComplete='on'
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
+                setPassword(e.target.value)
+              }
             ></Form.Control>
           </Form.Group>
 
@@ -120,7 +128,9 @@ const ProfilePage = () => {
               placeholder='Confirm password'
               autoComplete='on'
               value={confirmPassword}
-              onChange={e => setConfirmPassword(e.target.value)}
+              onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
+                setConfirmPassword(e.target.value)
+              }
             ></Form.Control>
           </Form.Group>
 

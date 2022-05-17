@@ -116,7 +116,7 @@ const ProductPage = () => {
                 <ListGroup.Item>
                   <Button
                     disabled={product.countInStock === 0}
-                    className='w-100'
+                    className='w-100 hover'
                     onClick={addToCartHandler}
                   >
                     Add To Cart

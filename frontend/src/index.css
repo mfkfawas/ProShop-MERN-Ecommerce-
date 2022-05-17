@@ -48,3 +48,8 @@ h3 {
 .margin-bottom {
   margin-bottom: 1.5rem;
 }
+
+.btn-sm:hover {
+  background: rgb(3, 108, 36);
+  color: #fff;
+}

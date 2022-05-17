@@ -151,6 +151,10 @@ interface UserDetailsFail {
   payload: any;
 }
 
+interface UserDetailsReset {
+  type: UserActionType.USER_DETAILS_RESET;
+}
+
 interface UserUpdateProfileRequest {
   type: UserActionType.USER_UPDATE_PROFILE_REQUEST;
 }
@@ -179,6 +183,7 @@ export type UserActionTypes =
   | UserDetailsRequest
   | UserDetailsSuccess
   | UserDetailsFail
+  | UserDetailsReset
   | UserUpdateProfileRequest
   | UserUpdateProfileSuccess
   | UserUpdateProfileFail
@@ -244,6 +249,10 @@ interface OrderListMyFail {
   payload: any;
 }
 
+interface OrderListMyReset {
+  type: OrderActionType.ORDER_LIST_MY_RESET;
+}
+
 export type OrderActionTypes =
   | OrderCreateRequest
   | OrderCreateSuccess
@@ -258,4 +267,5 @@ export type OrderActionTypes =
   | OrderPayReset
   | OrderListMyRequest
   | OrderListMySuccess
-  | OrderListMyFail;
+  | OrderListMyFail
+  | OrderListMyReset;
