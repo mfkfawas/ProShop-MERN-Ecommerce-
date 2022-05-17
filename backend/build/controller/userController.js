@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePassword = exports.updateUserProfile = exports.getUserProfile = exports.registerUser = exports.authUser = void 0;
+exports.getUsers = exports.updatePassword = exports.updateUserProfile = exports.getUserProfile = exports.registerUser = exports.authUser = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const generateToken_1 = __importDefault(require("../utils/generateToken"));
 const userModel_1 = __importDefault(require("../models/userModel"));
@@ -124,5 +124,15 @@ exports.updatePassword = (0, express_async_handler_1.default)((req, res, next) =
         email: user.email,
         isAdmin: user.isAdmin,
         token: (0, generateToken_1.default)(user._id),
+    });
+}));
+// @desc    Get all users
+// @route   GET /api/v1/users
+// @access  Private/Admin
+exports.getUsers = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield userModel_1.default.find();
+    res.status(200).json({
+        success: true,
+        data: users,
     });
 }));

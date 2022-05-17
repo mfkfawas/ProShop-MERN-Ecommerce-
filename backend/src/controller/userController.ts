@@ -142,3 +142,17 @@ export const updatePassword = asyncHandler(
     });
   }
 );
+
+// @desc    Get all users
+// @route   GET /api/v1/users
+// @access  Private/Admin
+export const getUsers = asyncHandler(
+  async (req: any, res: Response, next: NextFunction) => {
+    const users = await User.find();
+
+    res.status(200).json({
+      success: true,
+      data: users,
+    });
+  }
+);

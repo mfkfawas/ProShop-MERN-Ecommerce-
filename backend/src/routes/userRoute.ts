@@ -5,12 +5,14 @@ import {
   registerUser,
   updateUserProfile,
   updatePassword,
+  getUsers,
 } from '../controller/userController';
-import protect from '../middleware/authMiddleware';
+import { protect, admin } from '../middleware/authMiddleware';
 
 const router = express.Router();
 
-router.route('/').post(registerUser);
+// always use admin middleware before protect middleware.
+router.route('/').post(registerUser).get(protect, admin, getUsers);
 
 router.route('/login').post(authUser);
 
