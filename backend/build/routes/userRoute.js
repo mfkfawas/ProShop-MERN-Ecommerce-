@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const userController_1 = require("../controller/userController");
 const authMiddleware_1 = require("../middleware/authMiddleware");
 const router = express_1.default.Router();
-// always use admin middleware before protect middleware.
+// always use admin middleware after protect middleware.
 router.route('/').post(userController_1.registerUser).get(authMiddleware_1.protect, authMiddleware_1.admin, userController_1.getUsers);
 router.route('/login').post(userController_1.authUser);
 router.route('/profile').get(authMiddleware_1.protect, userController_1.getUserProfile).patch(authMiddleware_1.protect, userController_1.updateUserProfile);

@@ -172,6 +172,19 @@ interface UserUpdateProfileReset {
   type: UserActionType.USER_UPDATE_PROFILE_RESET;
 }
 
+interface UserListRequest {
+  type: UserActionType.USER_LIST_REQUEST;
+}
+
+interface UserListSuccess {
+  type: UserActionType.USER_LIST_SUCCESS;
+  payload: any;
+}
+interface UserListFail {
+  type: UserActionType.USER_LIST_FAIL;
+  payload: any;
+}
+
 export type UserActionTypes =
   | UserLoginRequest
   | UserLoginSuccess
@@ -187,7 +200,10 @@ export type UserActionTypes =
   | UserUpdateProfileRequest
   | UserUpdateProfileSuccess
   | UserUpdateProfileFail
-  | UserUpdateProfileReset;
+  | UserUpdateProfileReset
+  | UserListRequest
+  | UserListSuccess
+  | UserListFail;
 
 interface OrderCreateRequest {
   type: OrderActionType.ORDER_CREATE_REQUEST;

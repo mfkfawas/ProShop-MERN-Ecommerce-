@@ -11,7 +11,7 @@ import { protect, admin } from '../middleware/authMiddleware';
 
 const router = express.Router();
 
-// always use admin middleware before protect middleware.
+// always use admin middleware after protect middleware.
 router.route('/').post(registerUser).get(protect, admin, getUsers);
 
 router.route('/login').post(authUser);
