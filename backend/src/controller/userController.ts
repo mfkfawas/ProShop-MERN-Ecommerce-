@@ -156,3 +156,24 @@ export const getUsers = asyncHandler(
     });
   }
 );
+
+// @desc    Delete User
+// @route   DELETE /api/v1/users/:id
+// @access  Private/Admin
+export const deleteUser = asyncHandler(
+  async (req: any, res: Response, next: NextFunction) => {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      res.status(404);
+      return next(new Error('User not found'));
+    }
+
+    await user.remove();
+
+    res.status(204).json({
+      success: true,
+      data: null,
+    });
+  }
+);

@@ -5,7 +5,7 @@ import { Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { listUsers } from '../store/actions/userActions';
+import { listUsers, deleteUser } from '../store/actions/userActions';
 
 const UserListPage = () => {
   const navigate = useNavigate();
@@ -18,16 +18,21 @@ const UserListPage = () => {
   const { loading, users, error } = userList;
   const usersFromStore = users.data ? users.data : [];
 
+  const userDelete = useSelector((state: any) => state.userDelete);
+  const { success: successDelete } = userDelete;
+
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers());
     } else {
       navigate('/login');
     }
-  }, [dispatch, navigate, userInfo]);
+  }, [dispatch, navigate, userInfo, successDelete]);
 
-  const deleteHandler = () => {
-    console.log('delete');
+  const deleteHandler = (id: any) => {
+    if (window.confirm('Are you sure?')) {
+      dispatch(deleteUser(id));
+    }
   };
 
   return (
@@ -72,7 +77,7 @@ const UserListPage = () => {
                   <Button
                     variant='danger'
                     className='btn-sm'
-                    onClick={() => deleteHandler()}
+                    onClick={() => deleteHandler(user._id)}
                   >
                     <i className='fas fa-trash'></i>
                   </Button>

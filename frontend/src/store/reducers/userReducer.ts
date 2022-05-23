@@ -85,6 +85,21 @@ export const userListReducer = (state = { users: [] }, action: UserActionTypes) 
       return { ...state, loading: false, users: action.payload };
     case UserActionType.USER_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };
+    case UserActionType.USER_LIST_RESET:
+      return { ...state, users: [] };
+    default:
+      return state;
+  }
+};
+
+export const userDeleteReducer = (state = {}, action: UserActionTypes) => {
+  switch (action.type) {
+    case UserActionType.USER_DELETE_REQUEST:
+      return { ...state, loading: true };
+    case UserActionType.USER_DELETE_SUCCESS:
+      return { ...state, loading: false, success: true };
+    case UserActionType.USER_DELETE_FAIL:
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

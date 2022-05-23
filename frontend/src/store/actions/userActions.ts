@@ -43,6 +43,7 @@ export const logout =
     dispatch({ type: UserActionType.USER_LOGOUT });
     dispatch({ type: UserActionType.USER_DETAILS_RESET });
     dispatch({ type: OrderActionType.ORDER_LIST_MY_RESET });
+    dispatch({ type: UserActionType.USER_LIST_RESET });
   };
 
 export const register =
@@ -211,6 +212,36 @@ export const listUsers =
     } catch (error: any) {
       dispatch({
         type: UserActionType.USER_LIST_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+    }
+  };
+
+export const deleteUser =
+  (id: any) => async (dispatch: Dispatch<UserActionTypes>, getState: any) => {
+    try {
+      dispatch({
+        type: UserActionType.USER_DELETE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.delete(`/api/v1/users/${id}`, config);
+
+      dispatch({
+        type: UserActionType.USER_DELETE_SUCCESS,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: UserActionType.USER_DELETE_FAIL,
         payload: error.response?.data.message || error.message,
       });
     }
