@@ -177,3 +177,47 @@ export const deleteUser = asyncHandler(
     });
   }
 );
+
+// @desc    Get user by id
+// @route   GET /api/v1/users/:id
+// @access  Private/Admin
+export const getUserById = asyncHandler(
+  async (req: any, res: Response, next: NextFunction) => {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      res.status(404);
+      return next(new Error('User not found'));
+    }
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  }
+);
+
+// @desc    Update user
+// @route   PATCH /api/v1/users/:id
+// @access  Private/Admin
+export const updateUser = asyncHandler(
+  async (req: any, res: Response, next: NextFunction) => {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      res.status(404);
+      return next(new Error('User not found'));
+    }
+
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.isAdmin = req.body.isAdmin;
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      success: true,
+      data: updatedUser,
+    });
+  }
+);

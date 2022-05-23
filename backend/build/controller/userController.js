@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.getUsers = exports.updatePassword = exports.updateUserProfile = exports.getUserProfile = exports.registerUser = exports.authUser = void 0;
+exports.updateUser = exports.getUserById = exports.deleteUser = exports.getUsers = exports.updatePassword = exports.updateUserProfile = exports.getUserProfile = exports.registerUser = exports.authUser = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const generateToken_1 = __importDefault(require("../utils/generateToken"));
 const userModel_1 = __importDefault(require("../models/userModel"));
@@ -149,5 +149,37 @@ exports.deleteUser = (0, express_async_handler_1.default)((req, res, next) => __
     res.status(204).json({
         success: true,
         data: null,
+    });
+}));
+// @desc    Get user by id
+// @route   GET /api/v1/users/:id
+// @access  Private/Admin
+exports.getUserById = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield userModel_1.default.findById(req.params.id);
+    if (!user) {
+        res.status(404);
+        return next(new Error('User not found'));
+    }
+    res.status(200).json({
+        success: true,
+        data: user,
+    });
+}));
+// @desc    Update user
+// @route   PATCH /api/v1/users/:id
+// @access  Private/Admin
+exports.updateUser = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield userModel_1.default.findById(req.params.id);
+    if (!user) {
+        res.status(404);
+        return next(new Error('User not found'));
+    }
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.isAdmin = req.body.isAdmin;
+    const updatedUser = yield user.save();
+    res.status(200).json({
+        success: true,
+        data: updatedUser,
     });
 }));

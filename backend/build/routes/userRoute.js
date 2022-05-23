@@ -9,7 +9,11 @@ const authMiddleware_1 = require("../middleware/authMiddleware");
 const router = express_1.default.Router();
 // always use admin middleware after protect middleware.
 router.route('/').post(userController_1.registerUser).get(authMiddleware_1.protect, authMiddleware_1.admin, userController_1.getUsers);
-router.route('/:id').delete(authMiddleware_1.protect, authMiddleware_1.admin, userController_1.deleteUser);
+router
+    .route('/:id')
+    .delete(authMiddleware_1.protect, authMiddleware_1.admin, userController_1.deleteUser)
+    .get(authMiddleware_1.protect, authMiddleware_1.admin, userController_1.getUserById)
+    .patch(authMiddleware_1.protect, authMiddleware_1.admin, userController_1.updateUserProfile);
 router.route('/login').post(userController_1.authUser);
 router.route('/profile').get(authMiddleware_1.protect, userController_1.getUserProfile).patch(authMiddleware_1.protect, userController_1.updateUserProfile);
 router.patch('/updateMyPassword', authMiddleware_1.protect, userController_1.updatePassword);
