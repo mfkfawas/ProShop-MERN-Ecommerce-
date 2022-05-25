@@ -87,7 +87,7 @@ export const register =
   };
 
 export const getUserDetails =
-  (id: string) => async (dispatch: Dispatch<UserActionTypes>, getState: any) => {
+  (id: any) => async (dispatch: Dispatch<UserActionTypes>, getState: any) => {
     try {
       dispatch({
         type: UserActionType.USER_DETAILS_REQUEST,
@@ -242,6 +242,42 @@ export const deleteUser =
     } catch (error: any) {
       dispatch({
         type: UserActionType.USER_DELETE_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+    }
+  };
+
+export const updateUser =
+  (user: any) => async (dispatch: Dispatch<UserActionTypes>, getState: any) => {
+    try {
+      dispatch({
+        type: UserActionType.USER_UPDATE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.patch(`/api/v1/users/${user._id}`, user, config);
+
+      dispatch({
+        type: UserActionType.USER_UPDATE_SUCCESS,
+      });
+
+      dispatch({
+        type: UserActionType.USER_DETAILS_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: UserActionType.USER_UPDATE_FAIL,
         payload: error.response?.data.message || error.message,
       });
     }

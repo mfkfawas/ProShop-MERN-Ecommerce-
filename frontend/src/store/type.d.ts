@@ -202,6 +202,23 @@ interface UserDeleteFail {
   payload: any;
 }
 
+interface UserUpdateRequest {
+  type: UserActionType.USER_UPDATE_REQUEST;
+}
+
+interface UserUpdateSuccess {
+  type: UserActionType.USER_UPDATE_SUCCESS;
+  payload?: any;
+}
+interface UserUpdateFail {
+  type: UserActionType.USER_UPDATE_FAIL;
+  payload: any;
+}
+
+interface UserUpdateReset {
+  type: UserActionType.USER_UPDATE_RESET;
+}
+
 // prettier-ignore
 export type UserActionTypes =
   | UserLoginRequest
@@ -225,7 +242,7 @@ export type UserActionTypes =
   | UserListReset
   | UserDeleteRequest
   | UserDeleteSuccess
-  | UserDeleteFail;
+  | UserDeleteFail | UserUpdateRequest | UserUpdateSuccess | UserUpdateFail | UserUpdateReset;
 
 interface OrderCreateRequest {
   type: OrderActionType.ORDER_CREATE_REQUEST;

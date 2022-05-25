@@ -161,8 +161,10 @@ exports.getUserById = (0, express_async_handler_1.default)((req, res, next) => _
         return next(new Error('User not found'));
     }
     res.status(200).json({
-        success: true,
-        data: user,
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
     });
 }));
 // @desc    Update user
