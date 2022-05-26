@@ -1,15 +1,22 @@
 import express from 'express';
 
 import {
+  CreateProduct,
   deleteProduct,
   getAllProducts,
   getProduct,
+  UpdateProduct,
 } from '../controller/productController';
 import { admin, protect } from '../middleware/authMiddleware';
 
 const router = express.Router();
 
-router.get('/', getAllProducts);
-router.route('/:productId').get(getProduct).delete(protect, admin, deleteProduct);
+router.route('/').get(getAllProducts).post(protect, admin, CreateProduct);
+
+router
+  .route('/:productId')
+  .get(getProduct)
+  .delete(protect, admin, deleteProduct)
+  .patch(protect, admin, UpdateProduct);
 
 export default router;
