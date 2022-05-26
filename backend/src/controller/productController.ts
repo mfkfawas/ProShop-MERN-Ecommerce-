@@ -23,14 +23,34 @@ export const getAllProducts = asyncHandler(
 // @desc    Get single product
 // @route   GET /api/v1/products/:productId
 // @access  Public
-export const getProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const productId = req.params.productId;
-  const product = await Product.findById(productId);
+export const getProduct = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const productId = req.params.productId;
+    const product = await Product.findById(productId);
 
-  if (!product) {
-    res.status(404);
-    return next(new Error('Product not found'));
+    if (!product) {
+      res.status(404);
+      return next(new Error('Product not found'));
+    }
+
+    res.status(200).json(product);
   }
+);
 
-  res.status(200).json(product);
-});
+// @desc    Delete a product
+// @route   DELETE /api/v1/products/:productId
+// @access  Private/Admin
+export const deleteProduct = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const productId = req.params.productId;
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      res.status(404);
+      return next(new Error('Product not found'));
+    }
+
+    await product.remove();
+    res.status(204).json({ success: true, data: null });
+  }
+);
