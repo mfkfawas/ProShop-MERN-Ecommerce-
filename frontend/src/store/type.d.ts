@@ -75,6 +75,24 @@ interface ProductDeleteFail {
   payload: any;
 }
 
+interface ProductCreateRequest {
+  type: ActionType.PRODUCT_CREATE_REQUEST;
+}
+
+interface ProductCreateSuccess {
+  type: ActionType.PRODUCT_CREATE_SUCCESS;
+  payload: any;
+}
+
+interface ProductCreateFail {
+  type: ActionType.PRODUCT_CREATE_FAIL;
+  payload: any;
+}
+
+interface ProductCreateReset {
+  type: ActionType.PRODUCT_CREATE_RESET;
+}
+
 export type ProductActionType =
   | ProductListRequest
   | ProductListSuccess
@@ -84,7 +102,11 @@ export type ProductActionType =
   | ProductDetailsFail
   | ProductDeleteRequest
   | ProductDeleteSuccess
-  | ProductDeleteFail;
+  | ProductDeleteFail
+  | ProductCreateRequest
+  | ProductCreateSuccess
+  | ProductCreateFail
+  | ProductCreateReset;
 
 export interface CartItemType {
   cartItems:

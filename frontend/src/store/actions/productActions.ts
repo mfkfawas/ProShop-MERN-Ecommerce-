@@ -72,3 +72,35 @@ export const deleteProduct =
       });
     }
   };
+
+export const createProduct =
+  () => async (dispatch: Dispatch<ProductActionType>, getState: any) => {
+    try {
+      dispatch({
+        type: ActionType.PRODUCT_CREATE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.post(`/api/v1/products/`, {}, config);
+
+      dispatch({
+        type: ActionType.PRODUCT_CREATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionType.PRODUCT_CREATE_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+    }
+  };
