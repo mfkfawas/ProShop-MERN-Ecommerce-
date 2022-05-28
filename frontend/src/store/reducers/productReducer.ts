@@ -22,26 +22,11 @@ export const productListReducer = (
 };
 
 // This is for TS
-const productInitialState: ProductTypeObj = {
-  _id: 'string',
-  name: 'string',
-  image: 'string',
-  description: 'string',
-  brand: 'string',
-  category: 'string',
-  price: 5,
-  countInStock: 5,
-  rating: 5,
-  numReviews: 5,
-};
 
-export const productDetailsReducer = (
-  state: ProductTypeObj = productInitialState,
-  action: ProductActionType
-) => {
+export const productDetailsReducer = (state = {}, action: ProductActionType) => {
   switch (action.type) {
     case ActionType.PRODUCT_DETAILS_REQUEST:
-      return { ...state, loading: true };
+      return { loading: true };
     case ActionType.PRODUCT_DETAILS_SUCCESS:
       return { loading: false, product: action.payload };
     case ActionType.PRODUCT_DETAILS_FAIL:
