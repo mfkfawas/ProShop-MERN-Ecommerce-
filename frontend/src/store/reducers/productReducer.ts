@@ -31,6 +31,8 @@ export const productDetailsReducer = (state = {}, action: ProductActionType) => 
       return { loading: false, product: action.payload };
     case ActionType.PRODUCT_DETAILS_FAIL:
       return { loading: false, error: action.payload };
+    case ActionType.PRODUCT_DETAILS_RESET:
+      return {};
     default:
       return state;
   }
@@ -59,6 +61,24 @@ export const productCreateReducer = (state = {}, action: ProductActionType) => {
       return { loading: false, error: action.payload };
     case ActionType.PRODUCT_CREATE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const productUpdateReducer = (
+  state = { product: {} },
+  action: ProductActionType
+) => {
+  switch (action.type) {
+    case ActionType.PRODUCT_UPDATE_REQUEST:
+      return { loading: true };
+    case ActionType.PRODUCT_UPDATE_SUCCESS:
+      return { loading: false, success: true, product: action.payload };
+    case ActionType.PRODUCT_UPDATE_FAIL:
+      return { loading: false, error: action.payload };
+    case ActionType.PRODUCT_UPDATE_RESET:
+      return { product: {} };
     default:
       return state;
   }

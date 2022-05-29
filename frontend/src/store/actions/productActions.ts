@@ -104,3 +104,39 @@ export const createProduct =
       });
     }
   };
+
+export const updateProduct =
+  (product: any) => async (dispatch: Dispatch<ProductActionType>, getState: any) => {
+    try {
+      dispatch({
+        type: ActionType.PRODUCT_UPDATE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.patch(
+        `/api/v1/products/${product._id}`,
+        product,
+        config
+      );
+
+      dispatch({
+        type: ActionType.PRODUCT_UPDATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionType.PRODUCT_UPDATE_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+    }
+  };

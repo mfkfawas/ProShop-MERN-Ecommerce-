@@ -82,7 +82,8 @@ export const CreateProduct = asyncHandler(
 // @access  Private/Admin
 export const UpdateProduct = asyncHandler(
   async (req: Request | any, res: Response, next: NextFunction) => {
-    const { name, description, price, image, brand, category, countInStock } = req.body;
+    const { name, description, price, image, brand, category, countInStock, _id } =
+      req.body;
 
     const product = await Product.findById(req.params.productId);
 

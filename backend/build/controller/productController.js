@@ -74,7 +74,7 @@ exports.CreateProduct = (0, express_async_handler_1.default)((req, res, next) =>
 // @route   PATCH /api/v1/products/:productId
 // @access  Private/Admin
 exports.UpdateProduct = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, description, price, image, brand, category, countInStock } = req.body;
+    const { name, description, price, image, brand, category, countInStock, _id } = req.body;
     const product = yield productModel_1.default.findById(req.params.productId);
     if (!product) {
         res.status(404);

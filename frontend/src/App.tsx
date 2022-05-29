@@ -41,8 +41,8 @@ function App() {
               <Route path='/admin/userlist' element={<UserListPage />} />
               <Route path='/admin/user/:id/edit' element={<UserEditPage />} />
               <Route path='/admin/productlist' element={<ProductListPage />} />
-              <Route path='/admin/product/:id/edit' element={<ProductEditPage />} />
               <Route path='/' element={<HomePage />} />
+              <Route path='/admin/product/:id/edit' element={<ProductEditPage />} />
             </Routes>
           </main>
         </Container>
