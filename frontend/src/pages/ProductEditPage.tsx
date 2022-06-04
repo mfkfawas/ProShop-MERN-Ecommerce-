@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +18,7 @@ const ProductEditPage = () => {
   const [category, setCategory] = useState('');
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   const params = useParams() as any;
   const dispatch = useDispatch();
@@ -53,6 +55,30 @@ const ProductEditPage = () => {
       }
     }
   }, [dispatch, productIdFromURL, product, successUpdate, navigate]);
+
+  const uploadFileHandler = async (e: any) => {
+    console.log(e.target.files);
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      const { data } = await axios.post('/api/v1/upload', formData, config);
+
+      setImage(data);
+      setUploading(false);
+    } catch (error) {
+      console.error(error);
+      setUploading(false);
+    }
+  };
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,6 +152,20 @@ const ProductEditPage = () => {
                   setImage(e.target.value)
                 }
               ></Form.Control>
+
+              <p className='margin-up'>OR</p>
+
+              <label htmlFor='image-file' className='file-label margin-bottom'>
+                <input
+                  className='file-input hover'
+                  type='file'
+                  id='image-file'
+                  accept='image/*'
+                  onChange={uploadFileHandler}
+                />
+              </label>
+
+              {uploading && <Loader />}
             </Form.Group>
 
             <Form.Group controlId='brand' className='margin-bottom'>

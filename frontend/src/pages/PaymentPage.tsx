@@ -43,7 +43,7 @@ const PaymentPage = () => {
               name='paymentMethod'
               value='PayPal'
               checked
-              onChange={e => setPaymentMethod(e.target.value)}
+              onChange={(e: any) => setPaymentMethod(e.target.value)}
             ></Form.Check>
             {/* <Form.Check
               type='radio'

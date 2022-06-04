@@ -53,3 +53,14 @@ h3 {
   background: rgb(3, 108, 36);
   color: #fff;
 }
+
+.file-label {
+  cursor: pointer;
+}
+.file-input {
+  /* display: none; */
+}
+
+.margin-up {
+  margin-top: 1rem;
+}
