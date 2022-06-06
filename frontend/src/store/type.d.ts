@@ -374,6 +374,19 @@ interface OrderListMyReset {
   type: OrderActionType.ORDER_LIST_MY_RESET;
 }
 
+interface OrderListRequest {
+  type: OrderActionType.ORDER_LIST_REQUEST;
+}
+interface OrderListSuccess {
+  type: OrderActionType.ORDER_LIST_SUCCESS;
+  payload: any;
+}
+
+interface OrderListFail {
+  type: OrderActionType.ORDER_LIST_FAIL;
+  payload: any;
+}
+
 export type OrderActionTypes =
   | OrderCreateRequest
   | OrderCreateSuccess
@@ -389,4 +402,7 @@ export type OrderActionTypes =
   | OrderListMyRequest
   | OrderListMySuccess
   | OrderListMyFail
-  | OrderListMyReset;
+  | OrderListMyReset
+  | OrderListRequest
+  | OrderListSuccess
+  | OrderListFail;

@@ -159,3 +159,34 @@ export const listMyOrders =
       });
     }
   };
+
+export const listOrders =
+  () => async (dispatch: Dispatch<OrderActionTypes>, getState: any) => {
+    try {
+      dispatch({
+        type: OrderActionType.ORDER_LIST_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(`/api/v1/orders`, config);
+
+      dispatch({
+        type: OrderActionType.ORDER_LIST_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: OrderActionType.ORDER_LIST_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+    }
+  };
