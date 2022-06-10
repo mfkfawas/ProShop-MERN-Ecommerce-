@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMyOrders = exports.updateOrderToPaid = exports.getOrderById = exports.addOrderItems = void 0;
+exports.getOrders = exports.getMyOrders = exports.updateOrderToDelivered = exports.updateOrderToPaid = exports.getOrderById = exports.addOrderItems = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const orderModel_1 = __importDefault(require("../models/orderModel"));
 // @desc    Create new order
@@ -68,10 +68,29 @@ exports.updateOrderToPaid = (0, express_async_handler_1.default)((req, res, next
         res.status(200).json(updatedOrder);
     }
 }));
+// @desc    Update order to delivered
+// @route   GET /api/v1/orders/:id/deiver
+// @access  Private/Admin
+exports.updateOrderToDelivered = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const order = yield orderModel_1.default.findById(req.params.id);
+    if (order) {
+        order.isDelivered = true;
+        order.deliveredAt = Date.now();
+        const updatedOrder = yield order.save();
+        res.status(200).json(updatedOrder);
+    }
+}));
 // @desc    Get logged in user's orders
 // @route   GET /api/v1/orders/myorders
 // @access  Private
 exports.getMyOrders = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const orders = yield orderModel_1.default.find({ user: req.user._id });
+    res.status(200).json(orders);
+}));
+// @desc    Get all orders
+// @route   GET /api/v1/orders
+// @access  Private/Admin
+exports.getOrders = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const orders = yield orderModel_1.default.find({}).populate('user', ['id', 'name']);
     res.status(200).json(orders);
 }));

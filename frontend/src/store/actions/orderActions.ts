@@ -129,6 +129,41 @@ export const payOrder =
     }
   };
 
+export const deliverOrder =
+  (order: any) => async (dispatch: Dispatch<OrderActionTypes>, getState: any) => {
+    try {
+      dispatch({
+        type: OrderActionType.ORDER_DELIVER_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.patch(
+        `/api/v1/orders/${order._id}/deliver`,
+        {},
+        config
+      );
+
+      dispatch({
+        type: OrderActionType.ORDER_DELIVER_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: OrderActionType.ORDER_DELIVER_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+    }
+  };
+
 export const listMyOrders =
   () => async (dispatch: Dispatch<OrderActionTypes>, getState: any) => {
     try {

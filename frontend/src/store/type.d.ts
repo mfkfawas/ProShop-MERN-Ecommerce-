@@ -387,6 +387,23 @@ interface OrderListFail {
   payload: any;
 }
 
+interface OrderDeliverRequest {
+  type: OrderActionType.ORDER_DELIVER_REQUEST;
+}
+interface OrderDeliverSuccess {
+  type: OrderActionType.ORDER_DELIVER_SUCCESS;
+  payload: any;
+}
+
+interface OrderDeliverFail {
+  type: OrderActionType.ORDER_DELIVER_FAIL;
+  payload: any;
+}
+
+interface OrderDeliverReset {
+  type: OrderActionType.ORDER_DELIVER_RESET;
+}
+
 export type OrderActionTypes =
   | OrderCreateRequest
   | OrderCreateSuccess
@@ -405,4 +422,8 @@ export type OrderActionTypes =
   | OrderListMyReset
   | OrderListRequest
   | OrderListSuccess
-  | OrderListFail;
+  | OrderListFail
+  | OrderDeliverRequest
+  | OrderDeliverSuccess
+  | OrderDeliverFail
+  | OrderDeliverReset;

@@ -79,6 +79,23 @@ export const updateOrderToPaid = asyncHandler(
   }
 );
 
+// @desc    Update order to delivered
+// @route   GET /api/v1/orders/:id/deiver
+// @access  Private/Admin
+export const updateOrderToDelivered = asyncHandler(
+  async (req: any, res: Response, next: NextFunction) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+      order.isDelivered = true;
+      order.deliveredAt = Date.now() as any;
+
+      const updatedOrder = await order.save();
+      res.status(200).json(updatedOrder);
+    }
+  }
+);
+
 // @desc    Get logged in user's orders
 // @route   GET /api/v1/orders/myorders
 // @access  Private
