@@ -18,6 +18,6 @@ export interface ProductType {
 
 export interface RatingType {
   value: number;
-  text: string;
+  text?: string;
   color?: string;
 }

@@ -13,4 +13,5 @@ router
     .get(productController_1.getProduct)
     .delete(authMiddleware_1.protect, authMiddleware_1.admin, productController_1.deleteProduct)
     .patch(authMiddleware_1.protect, authMiddleware_1.admin, productController_1.UpdateProduct);
+router.route('/:productId/reviews').post(authMiddleware_1.protect, productController_1.createProductReview);
 exports.default = router;

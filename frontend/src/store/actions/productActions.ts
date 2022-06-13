@@ -140,3 +140,35 @@ export const updateProduct =
       });
     }
   };
+
+export const createProductReview =
+  (productId: any, review: any) =>
+  async (dispatch: Dispatch<ProductActionType>, getState: any) => {
+    try {
+      dispatch({
+        type: ActionType.PRODUCT_CREATE_REVIEW_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.post(`/api/v1/products/${productId}/reviews`, review, config);
+
+      dispatch({
+        type: ActionType.PRODUCT_CREATE_REVIEW_SUCCESS,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionType.PRODUCT_CREATE_REVIEW_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+    }
+  };

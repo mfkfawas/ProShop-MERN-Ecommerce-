@@ -1,6 +1,6 @@
 import mongoose, { Document, Types } from 'mongoose';
 
-interface ReviewType extends Document {
+interface ReviewType {
   name: string;
   rating: number;
   comment: string;

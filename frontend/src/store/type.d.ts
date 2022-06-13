@@ -116,6 +116,23 @@ interface ProductUpdateReset {
   type: ActionType.PRODUCT_UPDATE_RESET;
 }
 
+interface ProductCreateReviewRequest {
+  type: ActionType.PRODUCT_CREATE_REVIEW_REQUEST;
+}
+
+interface ProductCreateReviewSuccess {
+  type: ActionType.PRODUCT_CREATE_REVIEW_SUCCESS;
+}
+
+interface ProductCreateReviewFail {
+  type: ActionType.PRODUCT_CREATE_REVIEW_FAIL;
+  payload: any;
+}
+
+interface ProductCreateReviewReset {
+  type: ActionType.PRODUCT_CREATE_REVIEW_RESET;
+}
+
 export type ProductActionType =
   | ProductListRequest
   | ProductListSuccess
@@ -134,7 +151,11 @@ export type ProductActionType =
   | ProductUpdateRequest
   | ProductUpdateSuccess
   | ProductUpdateFail
-  | ProductUpdateReset;
+  | ProductUpdateReset
+  | ProductCreateReviewRequest
+  | ProductCreateReviewSuccess
+  | ProductCreateReviewFail
+  | ProductCreateReviewReset;
 
 export interface CartItemType {
   cartItems:

@@ -27,7 +27,7 @@ const ProductEditPage = () => {
   const productIdFromURL = params.id as any;
 
   const productDetails = useSelector((state: any) => state.productDetails);
-  const { loading, error, product } = productDetails;
+  const { product, loading, error } = productDetails;
 
   const productUpdate = useSelector((state: any) => state.productUpdate);
   const {

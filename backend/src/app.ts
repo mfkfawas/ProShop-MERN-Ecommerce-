@@ -1,6 +1,7 @@
 import path from 'path';
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import morgan from 'morgan';
 
 import globalErrorHandler from './middleware/globalErrorHandler';
 import productRouter from './routes/productRoute';
@@ -9,6 +10,10 @@ import orderRouter from './routes/orderRoute';
 import uploadRouter from './routes/uploadRoute';
 
 const app = express();
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 app.use(express.json());
 

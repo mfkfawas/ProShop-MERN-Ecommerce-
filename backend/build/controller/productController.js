@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateProduct = exports.CreateProduct = exports.deleteProduct = exports.getProduct = exports.getAllProducts = void 0;
+exports.createProductReview = exports.UpdateProduct = exports.CreateProduct = exports.deleteProduct = exports.getProduct = exports.getAllProducts = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const productModel_1 = __importDefault(require("../models/productModel"));
 // @desc    Get all products
@@ -89,4 +89,33 @@ exports.UpdateProduct = (0, express_async_handler_1.default)((req, res, next) =>
     product.countInStock = countInStock || product.countInStock;
     const updatedProduct = yield product.save();
     res.status(200).json({ success: true, data: updatedProduct });
+}));
+// @desc    Create new review
+// @route   POST /api/v1/products/:productId/review
+// @access  Private
+exports.createProductReview = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { rating, comment } = req.body;
+    const product = yield productModel_1.default.findById(req.params.productId);
+    if (!product) {
+        res.status(404);
+        return next(new Error('Product not found'));
+    }
+    const alreadyReviewed = product.reviews.some(review => review.user.toString() === req.user._id.toString());
+    if (alreadyReviewed) {
+        res.status(400);
+        return next(new Error('You already reviewed this product'));
+    }
+    const newReview = {
+        name: req.user.name,
+        rating: +rating,
+        comment: comment,
+        user: req.user._id,
+    };
+    product.reviews.unshift(newReview);
+    product.numReviews = product.reviews.length;
+    product.rating =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+            product.reviews.length;
+    yield product.save();
+    res.status(201).json({ message: 'Review created successfully' });
 }));

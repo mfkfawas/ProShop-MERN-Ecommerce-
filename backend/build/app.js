@@ -6,12 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const morgan_1 = __importDefault(require("morgan"));
 const globalErrorHandler_1 = __importDefault(require("./middleware/globalErrorHandler"));
 const productRoute_1 = __importDefault(require("./routes/productRoute"));
 const userRoute_1 = __importDefault(require("./routes/userRoute"));
 const orderRoute_1 = __importDefault(require("./routes/orderRoute"));
 const uploadRoute_1 = __importDefault(require("./routes/uploadRoute"));
 const app = (0, express_1.default)();
+if (process.env.NODE_ENV === 'development') {
+    app.use((0, morgan_1.default)('dev'));
+}
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     origin: 'http://localhost:3000',
