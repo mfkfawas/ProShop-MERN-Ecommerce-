@@ -4,12 +4,14 @@ import { ActionType } from './productActionType';
 import { ProductActionType } from '../type';
 
 export const listProducts =
-  (keyword = '') =>
+  (keyword = '', pageNumber: string | number = '') =>
   async (dispatch: Dispatch<ProductActionType>) => {
     try {
       dispatch({ type: ActionType.PRODUCT_LIST_REQUEST });
 
-      const { data } = await axios.get(`/api/v1/products?keyword=${keyword}`);
+      const { data } = await axios.get(
+        `/api/v1/products?keyword=${keyword}&pageNumber=${pageNumber}`
+      );
 
       dispatch({
         type: ActionType.PRODUCT_LIST_SUCCESS,

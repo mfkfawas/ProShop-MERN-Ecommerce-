@@ -37,8 +37,8 @@ interface ProductListSuccess {
   type: ActionType.PRODUCT_LIST_SUCCESS;
   payload: {
     products: ProductTypeObj[];
-    // pages?: number;
-    // page?: number;
+    pages?: number;
+    currentPage?: number;
   };
 }
 

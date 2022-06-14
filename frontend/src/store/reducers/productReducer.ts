@@ -12,7 +12,9 @@ export const productListReducer = (
       return {
         ...state,
         loading: false,
-        products: action.payload,
+        products: action.payload.products,
+        pages: action.payload.pages,
+        currentPage: action.payload.currentPage,
       };
     case ActionType.PRODUCT_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };

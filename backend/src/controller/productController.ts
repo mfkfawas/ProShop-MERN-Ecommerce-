@@ -7,7 +7,10 @@ import Product from '../models/productModel';
 // @route   GET /api/v1/products
 // @access  Public
 export const getAllProducts = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: any, res: Response, next: NextFunction) => {
+    const pageSize = parseInt(req.query.pageSize, 10) || 2;
+    const currentPage = parseInt(req.query.page, 10) || 1;
+
     const keyword = req.query.keyword
       ? {
           name: {
@@ -17,7 +20,11 @@ export const getAllProducts = asyncHandler(
         }
       : {};
 
-    const products = await Product.find({ ...keyword });
+    const count = await Product.countDocuments({ ...keyword });
+
+    const products = await Product.find({ ...keyword })
+      .limit(pageSize)
+      .skip(pageSize * (currentPage - 1));
 
     if (!products) {
       res.status(404);
@@ -25,7 +32,7 @@ export const getAllProducts = asyncHandler(
     }
 
     // SEND RESPONSE
-    res.status(200).json(products);
+    res.status(200).json({ products, currentPage, pages: Math.ceil(count / pageSize) });
   }
 );
 

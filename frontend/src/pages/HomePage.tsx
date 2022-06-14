@@ -8,29 +8,20 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { listProducts } from '../store/actions/productActions';
 import { ProductTypeObj } from '../interface';
+import Paginate from '../components/Paginate';
 
 // import products from '../products';
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { keyword } = useParams();
+  const { keyword, pageNumber = 1 } = useParams();
 
   useEffect(() => {
-    dispatch(listProducts(keyword));
-  }, [dispatch, keyword]);
+    dispatch(listProducts(keyword, pageNumber));
+  }, [dispatch, keyword, pageNumber]);
 
   const productList = useSelector((state: any) => state.productList);
-  const { products, loading, error } = productList;
-  // console.log(products);
-  // const [products, setProducts] = useState<ProductTypeObj[] | []>([]);
-
-  // useEffect(() => {
-  // const fetchProducts = async () => {
-  //   const { data } = await axios('/api/products');
-  //   setProducts(data.data.data);
-  // };
-  // fetchProducts();
-  // }, []);
+  const { products, loading, error, currentPage, pages } = productList;
 
   return (
     <>
@@ -45,6 +36,12 @@ const HomePage = () => {
             </Col>
           ))}
       </Row>
+
+      <Paginate
+        pages={pages}
+        currentPage={currentPage}
+        keyword={keyword ? keyword : ''}
+      />
     </>
   );
 };

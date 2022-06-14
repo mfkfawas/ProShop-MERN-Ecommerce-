@@ -19,6 +19,8 @@ const productModel_1 = __importDefault(require("../models/productModel"));
 // @route   GET /api/v1/products
 // @access  Public
 exports.getAllProducts = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const pageSize = parseInt(req.query.pageSize, 10) || 2;
+    const currentPage = parseInt(req.query.page, 10) || 1;
     const keyword = req.query.keyword
         ? {
             name: {
@@ -27,13 +29,16 @@ exports.getAllProducts = (0, express_async_handler_1.default)((req, res, next) =
             },
         }
         : {};
-    const products = yield productModel_1.default.find(Object.assign({}, keyword));
+    const count = yield productModel_1.default.countDocuments(Object.assign({}, keyword));
+    const products = yield productModel_1.default.find(Object.assign({}, keyword))
+        .limit(pageSize)
+        .skip(pageSize * (currentPage - 1));
     if (!products) {
         res.status(404);
         return next(new Error('No products found'));
     }
     // SEND RESPONSE
-    res.status(200).json(products);
+    res.status(200).json({ products, currentPage, pages: Math.ceil(count / pageSize) });
 }));
 // @desc    Get single product
 // @route   GET /api/v1/products/:productId
