@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 
 import Product from '../components/Product';
 import Message from '../components/Message';
@@ -12,10 +13,11 @@ import { ProductTypeObj } from '../interface';
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const { keyword } = useParams();
 
   useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
+    dispatch(listProducts(keyword));
+  }, [dispatch, keyword]);
 
   const productList = useSelector((state: any) => state.productList);
   const { products, loading, error } = productList;

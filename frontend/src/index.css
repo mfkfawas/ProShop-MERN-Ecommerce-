@@ -64,3 +64,10 @@ h3 {
 .margin-up {
   margin-top: 1rem;
 }
+
+.search-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 20rem;
+}

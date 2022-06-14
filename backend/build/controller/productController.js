@@ -19,7 +19,15 @@ const productModel_1 = __importDefault(require("../models/productModel"));
 // @route   GET /api/v1/products
 // @access  Public
 exports.getAllProducts = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const products = yield productModel_1.default.find({});
+    const keyword = req.query.keyword
+        ? {
+            name: {
+                $regex: req.query.keyword,
+                $options: 'i', // case insensitive
+            },
+        }
+        : {};
+    const products = yield productModel_1.default.find(Object.assign({}, keyword));
     if (!products) {
         res.status(404);
         return next(new Error('No products found'));

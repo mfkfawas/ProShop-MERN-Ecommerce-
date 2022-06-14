@@ -8,7 +8,16 @@ import Product from '../models/productModel';
 // @access  Public
 export const getAllProducts = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const products = await Product.find({});
+    const keyword = req.query.keyword
+      ? {
+          name: {
+            $regex: req.query.keyword, // now if iph is typed, iphone will also be returned.
+            $options: 'i', // case insensitive
+          },
+        }
+      : {};
+
+    const products = await Product.find({ ...keyword });
 
     if (!products) {
       res.status(404);
