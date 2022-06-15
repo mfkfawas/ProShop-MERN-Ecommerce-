@@ -10,6 +10,8 @@ import { listProducts } from '../store/actions/productActions';
 import { ProductTypeObj } from '../interface';
 import Paginate from '../components/Paginate';
 import ProductCarousel from '../components/ProductCarousel';
+import Meta from '../components/Meta';
+import { Link } from 'react-router-dom';
 
 // import products from '../products';
 
@@ -26,7 +28,15 @@ const HomePage = () => {
 
   return (
     <>
-      {!keyword && <ProductCarousel />}
+      <Meta />
+
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Link to='/' className='btn btn-light'>
+          Go Back
+        </Link>
+      )}
       <h1>Latest Products</h1>
       {loading && <Loader />}
       {error && <Message variant='danger'>{error}</Message>}

@@ -9,6 +9,7 @@ import Loader from '../components/Loader';
 import { createProductReview, listProductDetails } from '../store/actions/productActions';
 import { addToCart } from '../store/actions/cartActions';
 import { ActionType } from '../store/actions/productActionType';
+import Meta from '../components/Meta';
 
 const ProductPage = () => {
   const [qty, setQty] = useState(1);
@@ -70,6 +71,8 @@ const ProductPage = () => {
             <Message>Something went wrong with the product</Message>
           ) : (
             <>
+              <Meta title={product.name} />
+
               <Row>
                 <Col md={6}>
                   <Image src={product.image} alt={product.name} fluid />
