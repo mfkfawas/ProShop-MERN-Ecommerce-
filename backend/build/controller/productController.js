@@ -12,15 +12,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createProductReview = exports.UpdateProduct = exports.CreateProduct = exports.deleteProduct = exports.getProduct = exports.getAllProducts = void 0;
+exports.createProductReview = exports.UpdateProduct = exports.CreateProduct = exports.deleteProduct = exports.getProduct = exports.getAllProducts = exports.getTopProducts = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const productModel_1 = __importDefault(require("../models/productModel"));
+// @desc    Get top rated products
+// @route   POST /api/v1/products/top-rated
+// @access  Public
+exports.getTopProducts = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const products = yield productModel_1.default.find({}).sort({ rating: -1 }).limit(3);
+    res.json(products);
+}));
 // @desc    Get all products
 // @route   GET /api/v1/products
 // @access  Public
 exports.getAllProducts = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const pageSize = parseInt(req.query.pageSize, 10) || 2;
-    const currentPage = parseInt(req.query.page, 10) || 1;
+    const currentPage = parseInt(req.query.pageNumber, 10) || 1;
     const keyword = req.query.keyword
         ? {
             name: {

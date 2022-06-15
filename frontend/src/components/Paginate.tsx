@@ -1,41 +1,29 @@
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useLocation } from 'react-router-dom';
 
 interface PaginateProps {
-  pages: number;
-  currentPage: number;
-  isAdmin?: boolean;
-  keyword?: string;
+  total: number;
+  page: number;
+  // isAdmin?: boolean;
+  // keyword?: string;
 }
 
-const Paginate = ({
-  pages,
-  currentPage,
-  isAdmin = false,
-  keyword = '',
-}: PaginateProps): JSX.Element => {
+const Paginate = ({ total, page }: PaginateProps) => {
+  const location = useLocation();
+  const path = location.pathname;
+  const baseURL = path.split('/page/')[0] === '/' ? '' : path.split('/page/')[0];
+
+  if (total <= 1) return null;
   return (
-    <>
-      {pages > 1 && (
-        <Pagination>
-          {[...Array(pages).keys()].map(x => (
-            <LinkContainer
-              key={x + 1}
-              to={
-                !isAdmin
-                  ? keyword
-                    ? `/search/${keyword}/page/${x + 1}`
-                    : `/page/${x + 1}`
-                  : `/admin/productlist/${x + 1}`
-              }
-            >
-              <Pagination.Item active={x + 1 === currentPage}>{x + 1}</Pagination.Item>
-            </LinkContainer>
-          ))}
-        </Pagination>
-      )}
-    </>
+    <Pagination className='justify-content-center my-3'>
+      {[...Array(total).keys()].map(p => (
+        <LinkContainer key={p} to={`${baseURL}/page/${p + 1}`}>
+          <Pagination.Item active={p + 1 === page}>{p + 1}</Pagination.Item>
+        </LinkContainer>
+      ))}
+    </Pagination>
   );
 };
 

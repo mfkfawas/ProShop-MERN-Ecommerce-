@@ -9,6 +9,7 @@ import Loader from '../components/Loader';
 import { listProducts } from '../store/actions/productActions';
 import { ProductTypeObj } from '../interface';
 import Paginate from '../components/Paginate';
+import ProductCarousel from '../components/ProductCarousel';
 
 // import products from '../products';
 
@@ -25,6 +26,7 @@ const HomePage = () => {
 
   return (
     <>
+      {!keyword && <ProductCarousel />}
       <h1>Latest Products</h1>
       {loading && <Loader />}
       {error && <Message variant='danger'>{error}</Message>}
@@ -37,11 +39,7 @@ const HomePage = () => {
           ))}
       </Row>
 
-      <Paginate
-        pages={pages}
-        currentPage={currentPage}
-        keyword={keyword ? keyword : ''}
-      />
+      <Paginate total={pages} page={currentPage} />
     </>
   );
 };

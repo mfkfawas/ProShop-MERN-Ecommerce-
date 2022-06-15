@@ -134,7 +134,7 @@ const ProductListPage = () => {
             </tbody>
           </Table>
 
-          <Paginate pages={pages} currentPage={currentPage} isAdmin={true} />
+          <Paginate total={pages} page={currentPage} />
         </>
       )}
     </>

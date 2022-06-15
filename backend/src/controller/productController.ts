@@ -3,13 +3,24 @@ import asyncHandler from 'express-async-handler';
 
 import Product from '../models/productModel';
 
+// @desc    Get top rated products
+// @route   POST /api/v1/products/top-rated
+// @access  Public
+export const getTopProducts = asyncHandler(
+  async (req: any, res: Response, next: NextFunction) => {
+    const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+    res.json(products);
+  }
+);
+
 // @desc    Get all products
 // @route   GET /api/v1/products
 // @access  Public
 export const getAllProducts = asyncHandler(
   async (req: any, res: Response, next: NextFunction) => {
     const pageSize = parseInt(req.query.pageSize, 10) || 2;
-    const currentPage = parseInt(req.query.page, 10) || 1;
+    const currentPage = parseInt(req.query.pageNumber, 10) || 1;
 
     const keyword = req.query.keyword
       ? {
